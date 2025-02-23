@@ -14,7 +14,7 @@ description: STP is a Layer 2 protocol. It enables redundant Layer 2 networks.
 
 ## Broadcast storms
 
-<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
 
 * If PC1 want to send some traffic to PC2, it needs to know PC2 MAC's address. so PC1 sends an ARP Request frame, which is a broadcast frame. The switches will flood it out all of its interfaces, except the one it was received on, therefore creating a loop.
 * If enough of these looped broadcasts accumulate in the network, the network will be too congested for legitimate traffic to use the network. This is called a **broadcast storm.**
@@ -40,13 +40,13 @@ Before the switch, there was a device called Bridge. It's like a transitional st
 
 ## Demonstration and algorithm
 
-<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src=".gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 
 For example if the SW1-SW2 link fails, it will automatically adjust to it.
 
-<figure><img src=".gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 
 * By selecting which ports are forwarding and which ports are blocking, STP creates a single path to and from each point in the network. This prevents Layer 2 loops.
 * There is a set process that STP uses to determine which ports should be forwarding and which should be blocking.
@@ -61,13 +61,13 @@ ALL ports on the **root bridge** are put in a forwarding state, and other switch
 
 Traditionally, the bridge ID field of the spanning tree BPDU looked like this:
 
-<figure><img src=".gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (4) (1).png" alt=""><figcaption></figcaption></figure>
 
 The default bridge priority is 32768 on all switches, so by default the MAC address is used as the tie-breaker. The switch with the lowest bridge ID becomes the root bridge, so therefore by default the switch with the lowest MAC address becomes the root bridge.
 
 The Bridge Priority is compared first. If they tie, the MAC address is then compared.
 
-<figure><img src=".gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (5) (1).png" alt=""><figcaption></figcaption></figure>
 
 The G0/2 interface on each switch is connected to a PC, so because it isn’t receiving any BPDUs, it knows it is safe to go into forwarding mode, there is no risk of creating a Layer 2 loop.
 
@@ -387,6 +387,101 @@ SW3(config)# spanning-tree portfast [edge] bpdufilter default
     * The BPDU will be ignored
     * BPDU Guard will **not** be triggered
 
+### Root Guard
+
+* Prevents a port from becoming a Root Port by disabling it if superior BPDUs are received, thereby enforcing the current Root Bridge.
+* STP prevents loops by electing a root bridge and ensuring that each other switch has only **one valid path** to reach it.
+* You should not randomly select the root bridge. Some things you should consider include:
+  * Optimal traffic flow
+    * minimize latency
+    * minimize congestion
+  * Stability and reliability&#x20;
+
+<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+
+* Within your own LAN, you can easily control the root bridge by setting its priority to 0.
+  * But there are cases where you might connect your LAN to other switches outside of your direct control:
+    * A service provider offering Metro Ethernet service to customers
+      * often used to connect sites within a MAN (Metropolitan Area Network)
+* Even if you set your root bridge's priority to 0, its role can be taken by another switch with a lower MAC address.
+* With no safeguard in place SW1, SW2, and SW3 accept S26 as the root bridge, affecting the service provider's STP topology.
+
+<figure><img src=".gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+
+* Frames from SW3 to SW1 must take a detour through the customer's LAN.
+* **Root Guard** can be configured to protect your STP topology by preventing your switches from accepting **superior BPDUs** from switches outside of your control.
+* If you want to ensure that the root bridge remains in your LAN, you can configure Root Guard on the ports connected to switches outside of your control.
+  * From the service provider perspective:
+    * SW2 G0/2, SW3 G0/2
+  * The command to enable Root Guard on a port is:
+
+```
+SW2(config-if)# spanning-tree guard root
+```
+
+* There is no command to enable it by default from global config mode.
+* If a Root Guard-enabled port receives a BPDU, it will enter the Broken (Root Inconsistent) state, effectively disabling it.
+  * The port will not be able to forward data frames and will discard any frames it receives.
+  * SW1, SW2, and SW3 will not accept SW6 as the root bridge.
+
+<figure><img src=".gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+
+* To re-enable a port disabled by Root Guard, you must solve the issue that disabled the port.
+  * The disabled port must stop receiving superior BPDUs.
+  * Tell the customer to increase the priority value of their switch.
+* Once the superior BPDUs received by SW2 G0/2 and SW3 G0/3 age out, the ports will automatically be re-enabled.
+  * A BPDU's Max Age is 20 seconds by default.
+
+### Loop Guard
+
+* Protects the network from loops by disabling a port if it unexpectedly stops receiving BPDUs, ensuring it does not mistakenly enter the Forwarding state.
+
+#### Unidirectional links
+
+* A unidirectional link is a network link where data transmission occurs in only one direction.
+  * Typically caused by Layer 1 (Physical) issues.
+    * Damaged cables
+    * &#x20;Faulty connectors or transceivers (e.g. SFP modules)
+  * More common with fiber-optic cables than copper UTP.
+    * Fiber optic connections typically use two separate fibers.
+      * If one fiber is damaged, it can distrupt data flow in one direction, while the other remains unaffected.
+    * More vulnerable to physical damage than copper UTP cables.
+  * For a fiber-optic interface to be up/up, both fibers must be connected and functional.
+  * If there is a physical problem with either fiber, the devices should be able to detect it and disable their interfaces.
+  * If the devices fail to detect the physical problem, it could result in a unidirectional link.
+
+<figure><img src=".gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+
+* BPDUs originate from the Root Bridge and forwarded out of designated ports.
+* SW3 G0/1 is a Non-Designated blocking port because it receives superior BPDUs from SW2.
+* If the SW2-SW3 link becomes unidirectional and SW'2 BPDUs cannot reach SW3, what will happen?
+  * SW3 G0/1 will become a Designated port and start forwarding BPDUs.
+  * Because SW3's BPDUs are inferior to SW2's, SW2 will simply ignore SW3's BPDUs.
+    * SW2 G0/1 and SW3 G0/1 are both in the forwarding state. <mark style="color:red;">(SW1-SW2-SW3 loop!)</mark>
+* When a Loop Guard-enabled port's Max Age timer counts down to 0, it does not become a designated port and start transitioning to Forwarding.
+  * It enters the **Broken** (Loop Inconsistent) state.
+  * Like the Broken (Root Inconsistent) state triggered by a Root Guard violation, this blocks the port.
+    * In both cases, the port remains up/up, but STP blocks it
+  * If the borken port starts receiving BPDUs again, it will automatically be re-enabled.
+* Loop Guard can be enabled in two ways:
+  * Per-port: `SW3(config-if)# spanning-tree guard loop`
+  * Default: `SW3(config)# spanning-tree loopguard default`
+    * This enables Loop Guard on all ports
+    * Use `SW3(config-if)# spanning-tree guard none` to disable it on specific ports if needed.
+
+_Note: Loop Guard should be enabled on Root and Non-Designated ports (ports that are supposed to receive BPDUs)._
+
+* Loop Guard and Root Guard are mutually exclusive.
+  * They can't be enabled on the same port at the same time.
+  * Root Guard is meant to prevent Designated ports from becoming Root ports.
+  * Loop Guard is meant to prevent Non-Designated or Root ports from becoming Designated ports.
+* If Loop Guard is configured on a port (`spanning-tree guard loop`) and you then configure Root Guard (`spanning-tree guard root`), Loop Guard will be disabled on the port.
+  * and vice-versa
+* If Loop Guard is enabled by default (`spanning-tree loopguard default`) and you then configure Root Guard on a port, Loop Guard will be disabled on the port.
+  * The more specific configuration (interface vs global) takes effect.
+
 ## STP configuration
 
 ```
@@ -457,11 +552,3 @@ SW2(config-if)#spanning-tree vlan 1
 ```
 SW1# show spanning-tree interface <interface> detail
 ```
-
-### Root Guard
-
-* Prevents a port from becoming a Root Port by disabling it if superior BPDUs are received, thereby enforcing the current Root Bridge.
-
-### Loop Guard
-
-* Protects the network from loops by disabling a port if it unexpectedly stops receiving BPDUs, ensuring it does not mistakenly enter the Forwarding state.

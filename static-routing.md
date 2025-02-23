@@ -4,7 +4,7 @@ icon: route
 
 # Static Routing
 
-<figure><img src=".gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 If R2 receives packets with the destination address different than the neighborhed networks and routers, it will drop it, because it the routing table does not contain a route to the specific network.&#x20;
 
@@ -38,7 +38,7 @@ R1 already has a Connected route to 192.168.1.0/24. R4 already has a Connected r
 
 * The other routes must be manually configured (using Static routes)
 
-<figure><img src=".gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (2) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 &#x20;
 
@@ -49,9 +49,9 @@ R1 already has a Connected route to 192.168.1.0/24. R4 already has a Connected r
 <pre><code>R1(config)# <a data-footnote-ref href="#user-content-fn-1">ip route</a> ip-address net-mask next-hop
 </code></pre>
 
-<figure><img src=".gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (3) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src=".gitbook/assets/image (5) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (5) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 ## Static Route Configuration with exit-interface
 
