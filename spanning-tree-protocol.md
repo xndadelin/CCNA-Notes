@@ -257,6 +257,18 @@ This enables portfast on all **access ports** (not trunk ports).
 
 However, it can still be a risk. The portfast configuration can create a loop if there are any cabling changes in the network.
 
+To disable PortFast on a specific access port, one can use the command:
+
+```
+SW1(config-if)# spanning-tree portfast disable
+```
+
+#### PortFast on trunk ports
+
+```
+SW1(config-if)# spanning-tree portfast trunk
+```
+
 ### BPDU Guard
 
 * If an interface with BPDU Guard enabled receives a BPDU from another switch, the interface will be shut down to prevent a loop from forming.
@@ -345,13 +357,20 @@ port-priority Change an interface's spanning tree port priority
 SW2(config-if)#spanning-tree vlan 1
 ```
 
+### See configuration
 
+```
+SW1# show spanning-tree interface <interface> detail
+```
 
 ## STP Toolkit: Update
 
 ### PortFast
 
 * Allows switch ports connected to end hosts to immediately enter the STP Forwarding state, bypassing Listening and Learning.
+  * There are two kinds of PortFast:
+    * edge
+    * network (used for a feature called Bridge Assurance)
 
 ### BPDU Guard
 
