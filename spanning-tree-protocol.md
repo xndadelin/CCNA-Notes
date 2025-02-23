@@ -230,7 +230,11 @@ Regular spanning tree, meaning not Cisco’s PVST or PVST+, uses a destination M
 
 ### Portfast
 
+* Allows switch ports connected to end hosts to immediately enter the STP Forwarding state, bypassing Listening and Learning.
 * Can be enabled on interfaces which are connected to the endhosts.
+* There are two kinds of PortFast:
+  * edge
+  * network (used for a feature called Bridge Assurance)
 * There is no fear of creating broadcast storms between the links of a switch and an endhost. However, the switch will take about 30 seconds to be in the forwarding state. So wouldn't it be nice if these ports connected to endhosts could start forwarding away, without having to wait 30 seconds to go from listening to learning to forwarding? That is what portfast does.
 * Portfast allows a port to move immediately to the Forwarding state, bypassing Listening and Learning.&#x20;
 * If used, it must be enabled on _ports connected to end hosts_.
@@ -271,6 +275,7 @@ SW1(config-if)# spanning-tree portfast trunk
 
 ### BPDU Guard
 
+* Automatically disables a port if it receives a BPDU, protecting the STP topology by preventing unauthorized devices from becoming part of the network.
 * If an interface with BPDU Guard enabled receives a BPDU from another switch, the interface will be shut down to prevent a loop from forming.
 
 ```
@@ -291,6 +296,96 @@ SW1(config)# spanning-tree portfast bpduguard default
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Root Guard | If you enable root guard on an interface, even if it receives a superior BPDU (lower bridge ID) on that interface, the switch will not accept the new switch as the root bridge. The interface will be disabled. |
 | Loop Guard | If you enable loop guard on an interface, even if the interface stops receiving BPDUs, it will not start forwarding. The interface will be disabled.                                                             |
+
+* Because endhosts do not run STP and send BPDUs, a PortFast-enabled port should not receive BPDUs.
+  * But what if it does?
+* If a PortFast-enabled port receives a STP BPDU, it will revert to acting like a regular STP port (without PortFast).
+
+#### BPDU Guard - the problem (update)
+
+<figure><img src=".gitbook/assets/image (90).png" alt=""><figcaption></figcaption></figure>
+
+<figure><img src=".gitbook/assets/image (91).png" alt=""><figcaption></figcaption></figure>
+
+* Portfast should only be enabled on ports connected to non-switch devices (end hosts, routers).
+  * These devices do not send BPDUs.
+    * A PortFast-enabled port still sends BPDUs and will operate like a regular STP port if it receives BPDUs from a neighbor.
+    * If an end user carelessly connects a switch to a port meant for end hosts, it could affect the STP topology.
+      * BPDU Guard acts as a safeguard against this.
+* BPDU Guard protects the network from unauthorized switches being connected to ports intended for end hosts.
+* A BPDU Guard-enabled port continues to send BPDUs, but if it receives a BPDU, it enters the **error-disabled** state.
+  * In effect, this disables the port.
+* Use <mark style="color:yellow;">spanning-tree bpduguard disable</mark> in interface config mode to disable it on specific ports.
+* **ErrDisable** is a Cisco switch feature that disabled a port under certain conditions, such as BPDU Guard violation.
+  * ErrDisable Recovery
+    * Feature that automatically re-enables err-disabled ports after a certain period of time.
+
+```
+SW3# show errdisable recovery
+ErrDisable Reason         Timer Status
+--------------------      -------------
+arp-inspection           Disabled
+bpduguard               Disabled
+channel-misconfig (STP)  Disabled
+!output omitted
+
+Timer interval: 300 seconds
+
+Interfaces that will be enabled at the next timeout:
+```
+
+The default recovery timer is 300 seconds (5 minutes)
+
+* Err-disabled interfaces will be automatically re-enabled after 5 minutes
+* Use _**SW1(config)# errdisable recovery**_ interval seconds to modify the interval.
+* To enable ErrDisable Recovery for ports disabled by a particular cause, one can use the command:
+
+```
+SW3# errdisable recovery <cause>
+```
+
+### BPDU Filter
+
+* Stops a port from sending BPDUs or processing received BPDUs.
+* A switch port connected to an end host continues sending BPDUs every 2 seconds.
+  * Regardless of whether PortFast and/or BPDU Guard are enabled.
+* If the port does not connect to a switch, sending BPDUs is unnecessary and undesirable for a couple of reasons:
+  * Sending BPDUs uses some bandwidth and processing power on the switch (although it's minimal)
+  * BPDUs contain information about the LAN's STP topology.
+    * If maximum security is a concern, you should avoid sending this info to user devices.
+
+BPDU Filter solves this by preventing a port from sending BPDUs.
+
+Can be configured in two ways:
+
+* Per-port
+  * The port will not send BPDUs.
+  * The port will ignore any BPDUs it receives.
+  * In effect, this disables STP on the port.
+
+```
+SW3(config-if)# spanning-tree bpdufilter enable
+```
+
+* Default
+  * BPDU Filter will be activated on all PortFast-enabled ports.
+    * You can use spanning-tree bpdufilter disable to disable it on specific ports.
+  * The port will not send BPDUs.
+  * If a port receives a BPDU, PortFast and BPDU Filter are disabled, it operates as a normal STP port.
+
+```
+SW3(config)# spanning-tree portfast [edge] bpdufilter default
+```
+
+### BPDU Guard and BPDU Filter Behavior
+
+* BPDU Guard and BPDU Filter can be enabled on the same port at the same time:
+  * When BPDU Filter is enabled in global config mode and the port receives a BPDU:
+    * BPDU Filter will be disabled
+    * BPDU Guard will be triggered (and err-disable the interface)
+  * When BPDU Filter is enabled in interface config mode and the port receives a BPDU:
+    * The BPDU will be ignored
+    * BPDU Guard will **not** be triggered
 
 ## STP configuration
 
@@ -362,23 +457,6 @@ SW2(config-if)#spanning-tree vlan 1
 ```
 SW1# show spanning-tree interface <interface> detail
 ```
-
-## STP Toolkit: Update
-
-### PortFast
-
-* Allows switch ports connected to end hosts to immediately enter the STP Forwarding state, bypassing Listening and Learning.
-  * There are two kinds of PortFast:
-    * edge
-    * network (used for a feature called Bridge Assurance)
-
-### BPDU Guard
-
-* Automatically disables a port if it receives a BPDU, protecting the STP topology by preventing unauthorized devices from becoming part of the network.
-
-### BPDU Filter
-
-* Stops a port from sending BPDUs or processing received BPDUs.
 
 ### Root Guard
 
