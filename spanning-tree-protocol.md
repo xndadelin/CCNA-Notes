@@ -344,3 +344,27 @@ cost          Change an interface's per VLAN spanning tree path cost
 port-priority Change an interface's spanning tree port priority
 SW2(config-if)#spanning-tree vlan 1
 ```
+
+
+
+## STP Toolkit: Update
+
+### PortFast
+
+* Allows switch ports connected to end hosts to immediately enter the STP Forwarding state, bypassing Listening and Learning.
+
+### BPDU Guard
+
+* Automatically disables a port if it receives a BPDU, protecting the STP topology by preventing unauthorized devices from becoming part of the network.
+
+### BPDU Filter
+
+* Stops a port from sending BPDUs or processing received BPDUs.
+
+### Root Guard
+
+* Prevents a port from becoming a Root Port by disabling it if superior BPDUs are received, thereby enforcing the current Root Bridge.
+
+### Loop Guard
+
+* Protects the network from loops by disabling a port if it unexpectedly stops receiving BPDUs, ensuring it does not mistakenly enter the Forwarding state.
