@@ -1,6 +1,6 @@
 ---
-description: STP is a Layer 2 protocol. It enables redundant Layer 2 networks.
 icon: tree
+description: STP is a Layer 2 protocol. It enables redundant Layer 2 networks.
 ---
 
 # Spanning Tree Protocol
@@ -125,6 +125,8 @@ It was advertised a cost of 4 on G0/0, from SW3. However its interface also has 
 
 * The ports connected to another switch's root port MUST be designated. Because the root port is the switch's path to the root bridge, another switch must not block it.
 
+
+
 1. One switch is elected as the root bridge. All ports on the root bridge are **designated ports (forwarding state)**. Root bridge election:
    1. There is only one step in selecting the root bridge, that is the switch with the lowest bridge ID.
 2. Each remaining switch will select ONE of its interfaces to be its **root port**, which is also in a **forwarding state**. Ports across from, ports connected to, the root port are always **designated** **ports**.
@@ -140,3 +142,205 @@ It was advertised a cost of 4 on G0/0, from SW3. However its interface also has 
       1. Interface on switch with lowest root cost.
       2. Interface on switch with lowest bridge ID.
    2. Then the other interface will be a non-designated port, in a blocking state.
+
+## Spanning Tree Port States
+
+| STP Port State | Stable/Transitional |
+| -------------- | ------------------- |
+| **Blocking**   | Stable              |
+| **Listening**  | Transitional        |
+| **Learning**   | Transitional        |
+| **Forwarding** | Stable              |
+
+* &#x20;Root/Designated ports remain stable in a **Forwarding** state.
+* Non-designated ports remain stable in a **Blocking** state.
+* **Listening** and **Learning** are transitional states which are passed through when an interface is activated, or when a Blocking port must transition to a Forwarding state due to a change in the network topology.
+
+Actually, there is one more state you might hear of, this is the **disabled** state. This simply refers to an interface that is administratively disabled, meaning shutdown.
+
+### Blocking state
+
+* Non-designated ports are in a Blocking state.
+* Interfaces in a Blocking state are effectively disabled to prevent loops.
+* Interfaces in a Blocking state do not send/receive regular network traffic. Any regular traffic that arrives on an interface in a blocking state will simply be dropped.
+* However, Interfaces in a Blocking state do receive STP **BPDUs**.
+  * Interfaces in a Blocking state do NOT forward STP BPDUs.
+  * Interfaces in a Blocking state do NOT learn MAC addresses.
+
+### Listening state
+
+* After the Blocking state, interfaces with the Designated or Root role enter the Listening state.
+* Only Designated or Root ports enter the Listening state, Non-designated ports are always Blocking.
+* The Listening state is 15 seconds long by default. This is determined by a timer called the ‘Forward delay’ timer.
+* An interface in the Listening state ONLY forwards/receives Spanning Tree BPDUs. It does NOT send or receive regular traffic. If a regular unicast frame is received on a port in the Listening state, it will be discarded.&#x20;
+* An interface in the Listening state also does NOT learn MAC addresses from regular traffic that arrives on the interface.
+
+### Learning state
+
+* After the Listening state, a Designated or Root port will enter the Learning state.&#x20;
+* The Learning state is 15 seconds long by default. This is determined by the Forward delay timer, so the same timer is used for both the Listening and Learning states, meaning by default it takes a total of 30 seconds to move through both states and enter a forwarding state.
+* Same as in the Listening state, an interface in the Learning state ONLY sends or receives spanning tree protocol BPDUs. Also, it does NOT send or receive regular traffic.
+* However, here is the difference between the Listening and Learning states. An interface in the Learning state _**learns**_ MAC addresses from regular traffic that arrives on the interface. So, an interface in the learning state is preparing to forward traffic by building up some of its MAC address table beforehand.
+
+### Forwarding state
+
+* Root and Designated ports are in a Forwarding state when they're stable.&#x20;
+* A port in the Forwarding state operate as normal.
+* A port in the Forwarding state sends and receives BPDUs.&#x20;
+* It sends and receives normal traffic.&#x20;
+* Also it learns MAC addresses from the frames that arrive on it, and adds them to the MAC address table.&#x20;
+* So, it’s a switchport operating as normal.
+
+| STP Port State | Send/Receive BPDUs | Frame forwarding (regular traffic) | MAC address learning | Stable/Transitional |
+| -------------- | ------------------ | ---------------------------------- | -------------------- | ------------------- |
+| **Blocking**   | NO/YES             | NO                                 | NO                   | Stable              |
+| **Listening**  | YES/YES            | NO                                 | NO                   | Transitional        |
+| **Learning**   | YES/YES            | NO                                 | YES                  | Transitional        |
+| **Forwarding** | YES/YES            | YES                                | YES                  | Stable              |
+| **Disabled**   | NO/NO              | NO                                 | NO                   | Stable              |
+
+## Spanning Tree Timers
+
+| STP Timer         | Purpose                                                                                                          | Duration            |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------- |
+| **Hello**         | How often the root bridge sends hello BPDUs                                                                      | **2sec**            |
+| **Forward delay** | How long the switch will stay in the Listening and Learning states (each state is 15 seconds = total 30 seconds) | **15sec**           |
+| **Max Age**       | How long an interface will wait **after ceasing to receive Hello BDPUs** to change the STP topology.             | _20sec (10\*hello)_ |
+
+Note that switches do not forward the BPDUs out of their root ports and non-designated ports, only their designated ports.
+
+* If another BPDU is received before the max age timer counts down to 0, the time will reset to 20 seconds and no changes will occur.
+* However, If another BPDU is not received, the max age timer counts down to 0 and the switch will reevaluate its STP choices, including root bridge, and local root, designated, and non-designated ports.
+* After these decisions, if a non-designated port is selected to become a designated or root port, it will transition from the blocking state to the listening state (for 15 seconds), learning state (again for 15 seconds), and then finally the forwarding state.
+* So, it can take a total of 50 seconds for a blocking interface to transition to forwarding.
+* Why does it take so long? Well, these timers and transitional states are to make sure that loops aren’t accidentally created by an interface moving to forwarding state too soon.
+* However, a forwarding interface can move directly to a blocking state, because there is no worry about creating a loop by blocking an interface.
+* A blocking interface cannot move directly to forwarding state. It must go through the listening and learning states.
+
+Cisco’s PVST+ uses the destination MAC address of 0100.0ccc.cccd for its BPDUs.
+
+Well, PVST is an older version which only supports Cisco’s ISL for trunk encapsulation. PVST+ is a newer version which supports dot1q.
+
+Regular spanning tree, meaning not Cisco’s PVST or PVST+, uses a destination MAC address of 0180.c200.0000.
+
+## STP Toolkit&#x20;
+
+* Spanning Tree Optional Features (STP Toolkit)
+  * Options that improve the functionalitites of the STP.
+
+### Portfast
+
+* Can be enabled on interfaces which are connected to the endhosts.
+* There is no fear of creating broadcast storms between the links of a switch and an endhost. However, the switch will take about 30 seconds to be in the forwarding state. So wouldn't it be nice if these ports connected to endhosts could start forwarding away, without having to wait 30 seconds to go from listening to learning to forwarding? That is what portfast does.
+* Portfast allows a port to move immediately to the Forwarding state, bypassing Listening and Learning.&#x20;
+* If used, it must be enabled on _ports connected to end hosts_.
+* If enabled on a port connected to another switch, it could cause a Layer 2 loop.
+
+```
+SW1(config)#interface g0/2
+SW1(config-if)#spanning-tree portfast
+%Warning: portfast should only be enabled on ports connected to a single host. Connecting hubs, concentrators, switches, bridges, etc... to this interface when portfast is enabled, can cause temporary bridging loops. Use with CAUTION
+
+%Portfast has been configured on GigabitEthernet0/2 but will only have effect when the interface is in a non-trunking mode.
+SW1(config-if)#
+```
+
+* You can also enable portfast with the following command:
+
+```
+SW1(config)# spanning-tree portfast default
+```
+
+{% hint style="info" %}
+This enables portfast on all **access ports** (not trunk ports).
+{% endhint %}
+
+However, it can still be a risk. The portfast configuration can create a loop if there are any cabling changes in the network.
+
+### BPDU Guard
+
+* If an interface with BPDU Guard enabled receives a BPDU from another switch, the interface will be shut down to prevent a loop from forming.
+
+```
+SW1(config)#interface g0/2
+SW1(config-if)#spanning-tree bpduguard enable
+SW1(config-if)
+```
+
+* You can also enable BPDU Guard with the following command:
+
+```
+SW1(config)# spanning-tree portfast bpduguard default
+```
+
+* This enables BPDU Guard on all Portfast-enabled interfaces.
+
+| Feature    | Description                                                                                                                                                                                                      |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Root Guard | If you enable root guard on an interface, even if it receives a superior BPDU (lower bridge ID) on that interface, the switch will not accept the new switch as the root bridge. The interface will be disabled. |
+| Loop Guard | If you enable loop guard on an interface, even if the interface stops receiving BPDUs, it will not start forwarding. The interface will be disabled.                                                             |
+
+## STP configuration
+
+```
+SW1(config)#spanning-tree mode ?
+mst          Multiple spanning tree mode
+pvst         Per-Vlan spanning tree mode
+rapid-pvst   Per-Vlan rapid spanning tree mode
+
+SW1(config)#spanning-tree mode pvst
+```
+
+### Configure the Primary Root Bridge
+
+```
+SW3(config)#spanning-tree vlan 1 root primary
+SW3(config)#do show spanning-tree
+
+VLAN0001
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    24577
+             Address     cccc.cccc.cccc
+             This bridge is the root
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    24577 (priority 24576 sys-id-ext 1)
+             Address     cccc.cccc.cccc
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  15  sec
+```
+
+The spanning-tree vlan vlan-number root primary command sets the STP priority to 24576. If another switch already has a priority than 24576, it sets this switch priority to 4096 less than the other switch's priority.
+
+### Configure the Secondary Root Bridge
+
+```
+SW2(config)#spanning-tree vlan 1 root secondary
+SW2(config)#do show spanning-tree
+
+VLAN0001
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    24577
+             Address     cccc.cccc.cccc
+             Cost        4
+             Port        1 (GigabitEthernet0/0)
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    28673 (priority 28672 sys-id-ext 1)
+             Address     bbbb.bbbb.bbbb
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+```
+
+### STP Load-Balancing
+
+If you have multiple VLANs in your network, blocking the same interface in each VLAN is a waste of interface bandwidth. That connection will be doing nothing, just waiting for another connection to fail so it can start forwarding. However, if you configure a different root bridge for different VLANs, different VLANs will disable different interfaces.
+
+### Configure STP Port Settings
+
+```
+SW2(config-if)#spanning-tree vlan 1 ?
+cost          Change an interface's per VLAN spanning tree path cost
+port-priority Change an interface's spanning tree port priority
+SW2(config-if)#spanning-tree vlan 1
+```
