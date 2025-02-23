@@ -1,6 +1,7 @@
 # Table of contents
 
-* [Welcome](README.md)
+* [Analiza traficului de rețea](README.md)
+* [Welcome](<README (1).md>)
 * [Network Devices](network-devices.md)
 * [Interfaces and Cables](interfaces-and-cables.md)
 * [OSI & TCP/IP](osi-and-tcp-ip.md)
@@ -13,5 +14,5 @@
 * [Static Routing](static-routing.md)
 * [Subnetting](subnetting.md)
 * [VLANs](vlans.md)
-* [Analiza traficului de rețea](analiza-traficului-de-retea.md)
+* [DTP and VTP](dtp-and-vtp.md)
 * [Spanning Tree Protocol](spanning-tree-protocol.md)
