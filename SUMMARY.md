@@ -1,7 +1,6 @@
 # Table of contents
 
-* [Analiza traficului de rețea](README.md)
-* [Welcome](<README (1).md>)
+* [Welcome](README.md)
 * [Network Devices](network-devices.md)
 * [Interfaces and Cables](interfaces-and-cables.md)
 * [OSI & TCP/IP](osi-and-tcp-ip.md)
