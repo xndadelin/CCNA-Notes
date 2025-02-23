@@ -15,3 +15,4 @@
 * [VLANs](vlans.md)
 * [DTP and VTP](dtp-and-vtp.md)
 * [Spanning Tree Protocol](spanning-tree-protocol.md)
+* [Rapid STP](rapid-stp.md)
