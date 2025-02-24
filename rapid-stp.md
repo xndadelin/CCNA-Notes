@@ -67,7 +67,7 @@ The Blocking, Listening and Disabled are now combined into a single state called
 
 ### RSTP: Alternate port role
 
-<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 * Discarding port that receives a superior BPDU from another switch.
 * Functions as a backup to the root port.
@@ -78,7 +78,7 @@ The Blocking, Listening and Disabled are now combined into a single state called
 
 * One more STP optional feature that was built into RSTP is **BackboneFast.**
 
-<figure><img src=".gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 
 * BackboneFast allows SW3 to expire the max age timers on its interface and rapidly forward the superior BPDUs to SW2.
 
@@ -86,7 +86,7 @@ The Blocking, Listening and Disabled are now combined into a single state called
 
 * Discarding port that receives a superior BPDU from **another interface on the same switch**.
 
-<figure><img src=".gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
 
 * This only happend when two interfaces are connected to the same collision domain (via a hub).
 * Function as a backup for a designated port.
@@ -96,7 +96,7 @@ Rapid STP is compatible with Classic STP. The interface(s) on the Rapid STP-enab
 
 In classic STP, only the root bridge originated BPDUs are being forwarded. In rapid STP, ALL switches originate and send their own BPDUs from their designated ports.
 
-<figure><img src=".gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (4) (1).png" alt=""><figcaption></figcaption></figure>
 
 * All switches running Rapid STP send their own BPDUs every hello time (2 seconds).
 * Switches ‘age’ the BPDU information much more quickly. In classic STP, a switch waits 10 hello intervals (20 seconds). In rapid STP, a switch considers a neighbor lost if it misses 3 BPDUs (6 seconds). It will then ‘flush’ all MAC addresses learned on that interface.
