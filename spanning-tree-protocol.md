@@ -40,7 +40,7 @@ Before the switch, there was a device called Bridge. It's like a transitional st
 
 ## Demonstration and algorithm
 
-<figure><img src=".gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 <figure><img src=".gitbook/assets/image (2) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
@@ -399,7 +399,7 @@ SW3(config)# spanning-tree portfast [edge] bpdufilter default
 
 <figure><img src=".gitbook/assets/image (5) (1).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src=".gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 * Within your own LAN, you can easily control the root bridge by setting its priority to 0.
   * But there are cases where you might connect your LAN to other switches outside of your direct control:

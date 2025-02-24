@@ -67,7 +67,7 @@ The Blocking, Listening and Disabled are now combined into a single state called
 
 ### RSTP: Alternate port role
 
-<figure><img src=".gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 * Discarding port that receives a superior BPDU from another switch.
 * Functions as a backup to the root port.

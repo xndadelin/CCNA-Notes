@@ -4,7 +4,7 @@ icon: route
 
 # Static Routing
 
-<figure><img src=".gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 If R2 receives packets with the destination address different than the neighborhed networks and routers, it will drop it, because it the routing table does not contain a route to the specific network.&#x20;
 
