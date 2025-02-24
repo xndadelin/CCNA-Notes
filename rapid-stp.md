@@ -78,7 +78,7 @@ The Blocking, Listening and Disabled are now combined into a single state called
 
 * One more STP optional feature that was built into RSTP is **BackboneFast.**
 
-<figure><img src=".gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (2) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 * BackboneFast allows SW3 to expire the max age timers on its interface and rapidly forward the superior BPDUs to SW2.
 
@@ -86,7 +86,7 @@ The Blocking, Listening and Disabled are now combined into a single state called
 
 * Discarding port that receives a superior BPDU from **another interface on the same switch**.
 
-<figure><img src=".gitbook/assets/image (3) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (3) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 * This only happend when two interfaces are connected to the same collision domain (via a hub).
 * Function as a backup for a designated port.

@@ -42,11 +42,11 @@ Before the switch, there was a device called Bridge. It's like a transitional st
 
 <figure><img src=".gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src=".gitbook/assets/image (2) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (2) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 For example if the SW1-SW2 link fails, it will automatically adjust to it.
 
-<figure><img src=".gitbook/assets/image (3) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (3) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 * By selecting which ports are forwarding and which ports are blocking, STP creates a single path to and from each point in the network. This prevents Layer 2 loops.
 * There is a set process that STP uses to determine which ports should be forwarding and which should be blocking.
@@ -408,7 +408,7 @@ SW3(config)# spanning-tree portfast [edge] bpdufilter default
 * Even if you set your root bridge's priority to 0, its role can be taken by another switch with a lower MAC address.
 * With no safeguard in place SW1, SW2, and SW3 accept S26 as the root bridge, affecting the service provider's STP topology.
 
-<figure><img src=".gitbook/assets/image (2) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (2) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 * Frames from SW3 to SW1 must take a detour through the customer's LAN.
 * **Root Guard** can be configured to protect your STP topology by preventing your switches from accepting **superior BPDUs** from switches outside of your control.
@@ -426,7 +426,7 @@ SW2(config-if)# spanning-tree guard root
   * The port will not be able to forward data frames and will discard any frames it receives.
   * SW1, SW2, and SW3 will not accept SW6 as the root bridge.
 
-<figure><img src=".gitbook/assets/image (3) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (3) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 * To re-enable a port disabled by Root Guard, you must solve the issue that disabled the port.
   * The disabled port must stop receiving superior BPDUs.

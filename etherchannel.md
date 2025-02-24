@@ -6,7 +6,7 @@ icon: ethernet
 
 ## Intro
 
-<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
 
 * ASW1 (Access layer switch) is a switch that end hosts connect to.
 * DSW1 (Distribution layer switch) is a switch that access layer switches connect to.&#x20;
@@ -16,7 +16,7 @@ icon: ethernet
 
 The network is still congested, and users are reporting problems. SO, the admin adds another link.
 
-<figure><img src=".gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
 
 When the bandwidth of the interfaces connected to end hosts is greater than the bandwidth of the connection to the distribution switch(es), this is called **oversubscription**.\
 Some oversubscription is acceptable, but too much will cause congestion.

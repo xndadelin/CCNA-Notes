@@ -38,7 +38,7 @@ R1 already has a Connected route to 192.168.1.0/24. R4 already has a Connected r
 
 * The other routes must be manually configured (using Static routes)
 
-<figure><img src=".gitbook/assets/image (2) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (2) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 &#x20;
 
@@ -49,7 +49,7 @@ R1 already has a Connected route to 192.168.1.0/24. R4 already has a Connected r
 <pre><code>R1(config)# <a data-footnote-ref href="#user-content-fn-1">ip route</a> ip-address net-mask next-hop
 </code></pre>
 
-<figure><img src=".gitbook/assets/image (3) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (3) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 <figure><img src=".gitbook/assets/image (5) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 

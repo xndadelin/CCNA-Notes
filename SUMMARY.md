@@ -18,3 +18,5 @@
 * [Rapid STP](rapid-stp.md)
 * [EtherChannel](etherchannel.md)
 * [Dynamic Routing](dynamic-routing.md)
+* [RIP & EIGRP](rip-and-eigrp.md)
+* [OSPF](ospf.md)
