@@ -41,7 +41,7 @@ icon: info
 
 ## RIP Configuration
 
-<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 ```
 R1(config)#router rip
@@ -73,7 +73,7 @@ R1(config-router)#passive-interface g2/0
 
 ### Advertise a default route into RIP.
 
-<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 ```
 R1(configure-router)#default-information originate

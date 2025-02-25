@@ -20,3 +20,4 @@
 * [Dynamic Routing](dynamic-routing.md)
 * [RIP & EIGRP](rip-and-eigrp.md)
 * [OSPF](ospf.md)
+* [First Hop Redundancy Protocols](first-hop-redundancy-protocols.md)

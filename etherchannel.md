@@ -12,7 +12,7 @@ icon: ethernet
 * DSW1 (Distribution layer switch) is a switch that access layer switches connect to.&#x20;
 * If there are 40 hosts connected to ASW1, the connection is congested. The admin should add another link to increase the bandwidth, so it can support all of the end hosts.
 
-<figure><img src=".gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 The network is still congested, and users are reporting problems. SO, the admin adds another link.
 
