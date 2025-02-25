@@ -289,3 +289,170 @@ R1(config-router)#no passive-interface g1/0
 * Then configure specific interfaces as active:&#x20;
 
 `R1(config-router)#no passive-interface interface-id`
+
+## Loopback interfaces
+
+* A loopback interface is a virtual interface in the router.
+* It is always up/up (unless you manually shut it down).
+* So, this means that the status of a loopback interface isn’t dependent on a physical interface.
+* Physical interfaces can have hardware problems and fail, however that can’t happen to a loopback interface unless the router itself fails.
+* So, it provides a consistent IP address that can be used to reach and identify the router. Sometimes you need to send traffic directly to a router.
+* Let’s says R1 has no loopback interface at the moment, and R4 receives a packet destined for R1 at 10.0.13.1, the IP address of its G1/0 interface. It might forward it to R1 like this.
+* What if R1’s G1/0 interface goes down for some reason? If R4 receives a packet destined for R1 at 10.0.13.1, it will not be able to send the packet to R1.
+* How about if R1 has a loopback interface, 1.1.1.1, and that is used to identify R1 instead of 10.0.13.1?
+* Even if a physical interface fails, when R4 receives a packet destined for R1’s loopback interface it will still be able to send the packet to R1.
+* So, that’s why it’s a good idea to configure a loopback interface on a router. It provides an interface with an IP address that is always up, and can consistently be used to identify and reach the router.
+
+## OSPF Network Types
+
+* The OSPF network type refers to the type of connection between OSPF neighbors, and the type influences how OSPF behaves in some ways. The most common type of connection in modern networks is Ethernet, of course.
+* There are three main OSPF network types:
+  * The first is the Broadcast network type, which is enabled by default on Ethernet and FDDI interfaces. FDDI is an old technology.
+  * The next is the Point-to-point network type, which is enabled by default on PPP and HDLC interfaces.
+  * The last main network type is Non-broadcast. It is enabled by default on Frame Relay and X.25 interfaces.
+
+### Broadcast Network Type
+
+<figure><img src=".gitbook/assets/image (105).png" alt=""><figcaption></figcaption></figure>
+
+* This network type is enabled on Ethernet and FDDI interfaces by default.
+* In the network diagram above, these are all Ethernet connections, and therefore these connections between the routers are all using the Broadcast network type.
+* Routers dynamically discover neighbors by sending and listening for OSPF Hello messages using the multicast address 224.0.0.5. However, not all network types dynamically discover neighbors like this.
+* With the ‘Non-broadcast’ network type you must manually configure neighbors.
+* A DR, designated router, and BDR, backup designated router, must be elected on each subnet.
+* However in cases like the G1/0 interface of R1, R3, R4, and R5 where there are no OSPF neighbors, there is just a DR, no BDR.
+* Routers which aren’t the DR or BDR for the subnet become a ‘DROther’.
+* Each subnet needs a DR. These subnets are easy, there are no OSPF neighbors so each router becomes the DR for the subnet.
+
+<figure><img src=".gitbook/assets/image (106).png" alt=""><figcaption></figcaption></figure>
+
+* How about the 192.168.1.0/30 subnet between R1 and R2?
+* Let’s say R2 is the DR.
+* So, R1 becomes the BDR for the segment.&#x20;
+* How about the 192.168.2.0/29 subnet that R2, R3, R4, and R5 connect to? For example, R5 might be the DR, R4 the BDR, and then R2 and R3 become DROthers.
+
+#### DR/BDR election
+
+<figure><img src=".gitbook/assets/image (107).png" alt=""><figcaption></figcaption></figure>
+
+* There is an order of priority.
+  * First up, the router with the highest OSPF interface priority in the subnet becomes the DR for the segment.
+  * However, all interfaces have the same priority by default, so then the routers compare their OSPF router IDs. The router with the highest OSPF router ID wins.
+* First place’ in the election becomes the DR for the subnet, and ‘second place’ becomes the BDR.
+* The default OSPF interface priority is 1 on all interfaces.
+* The command to change the OSPF priority of an interface is:
+
+```
+R2(config-if)#ip ospf priority <1-255>
+```
+
+* If you set the OSPF interface priority to 0, the router CANNOT be the DR/BDR for the subnet, no matter what.
+* The DR/BDR election is ‘non-preemptive’.
+* 'non-preemptive’ means is that once the DR/BDR are selected they will keep their role until OSPF is reset, the interface fails/is shut down, etc.
+* When the DR goes down, the BDR becomes the new DR. Then an election is held for the next BDR.
+* In the broadcast network type, routers will only form a full OSPF adjacency with the DR and BDR of the segment.
+* Therefore, routers only exchange LSAs with the DR and BDR. DROthers will not exchange LSAs with each other.
+* All routers will still have the same LSDB, but this reduces the amount of LSAs flooding the network.
+* When routers need to send messages to the DR and BDR they use multicast address 224.0.0.6.
+* The DR and BDR form a full adjacency with ALL routers in the subnet, including the DROthers.
+* DROthers will form a FULL adjacency only with the DR/BDR.
+
+### Point-to-Point Network Type
+
+<figure><img src=".gitbook/assets/image (108).png" alt=""><figcaption></figcaption></figure>
+
+* This network type is enabled on serial interfaces using the PPP or HDLC encapsulations by default.
+* PPP and HDLC are both Layer 2 encapsulations, similar to Ethernet, except they are used on serial connections.
+* Same as the Broadcast network type, routers dynamically discover neighbors by sending/listening for OSPF Hello messages using multicast address 224.0.0.5. However, here’s a difference. A DR and BDR are NOT elected.
+* As the network type name implies, these encapsulations are used for ‘point-to-point’ connections between two routers.
+* Therefore there is no point in electing a DR and BDR. The two routers will form a Full adjacency with each other, without the need to elect a DR and BDR.
+
+#### Serial Interfaces
+
+<figure><img src=".gitbook/assets/image (110).png" alt=""><figcaption></figcaption></figure>
+
+```
+R1(config)#interface s2/0
+R1(config-if)#clock rate ?
+  With the exception of the following standard values not subject to rounding,
+
+       1200 2400 4800 9600 14400 19200 28800 38400
+       56000 64000 128000 2015232
+
+  accepted clockrates will be bestfitted (rounded) to the nearest value
+  supportable by the hardware.
+
+  <246-8064000>    DCE clock rate (bits per second)
+
+R1(config-if)#clock rate 64000
+R1(config-if)#ip address 192.168.1.1 255.255.255.0
+R1(config-if)#no shut
+```
+
+* One side of a serial connection functions as DCE, which stands for Data Communications Equipment.
+* The other side functions as DTE, which stands for Data Terminal Equipment.
+* On serial connections, the DCE side needs to specify the clock rate, which is the speed, of the connection.
+* In this case R1 has the DCE side of the cable and therefore needs to tell R2 what speed the connection will operate at.
+* Ethernet interfaces use the SPEED command to configure the interface’s operating speed. Serial interfaces use the CLOCK RATE command.
+* On Cisco routers, the default encapsulation on a serial interface is HDLC. Actually, it’s Cisco’s own version called ‘cHDLC’, Cisco HDLC, but it displays as just ‘HDLC’ in the CLI.
+* Note that if you change the encapsulation, it must match on both ends or the interface will go down.&#x20;
+
+### Configure the OSPF Network Type
+
+```
+R1(config-if)#ip ospf network ?
+ broadcast            Specify OSPF broadcast multi-access network
+ non-broadcast        Specify OSPF NBMA network
+ point-to-multipoint  Specify OSPF point-to-multipoint network
+ point-to-point       Specify OSPF point-to-point network
+```
+
+* Note that not all network types work on all link types. For example, a serial link cannot use the broadcast network type. This is because serial links don’t support Layer 2 broadcast frames, which is necessary for the broadcast network type.
+
+| Broadcast                                | Point-to-point                               |
+| ---------------------------------------- | -------------------------------------------- |
+| Default on **Ethernet, FDDI** interfaces | Default on **HDLC, PPP** (serial) interfaces |
+| DR/DBR elected                           | No DR/BDR                                    |
+| Neighbors dynamically discovered         | Neighbors dynamically discovered             |
+| Default timers: Hello 10, Dead 40        | Default timers: Hello 10, Dead 40            |
+
+The non-broadcast network type uses a default Hello timer of 30 seconds and Dead timer of 120 seconds.
+
+## Neighbors Requirements
+
+<figure><img src=".gitbook/assets/image (111).png" alt=""><figcaption></figcaption></figure>
+
+1. Area number must match.
+2. Interfaces must be in the same subnet.
+3. OSPF process must be not **shutdown.**
+   1. `R2(config-router)#shutdown`
+4. OSPF router-id must be unique.
+5. Hello and Dead timers must match.
+   1. `R2(config-if0#ip ospf hello-interval/dead-interval <seconds>`
+6. Authentication settings must match
+
+```
+R2(config-if)#ip ospf authentication-key jeremy
+R2(config-if)#ip ospf authentication
+R2(config-if)#
+*Aug 23 04:56:28.435: %OSPF-5-ADJCHG: Process 1, Nbr 192.168.1.1 on GigabitEthernet0/0 from FULL to DOWN, Neighbor Down: D
+R2(config-if)#do show ip ospf neighbor
+R2(config-if)#
+```
+
+7. IP MTU settings must match.
+   1. Can become OSPF neighbors, but OSPF does not operate properly.
+
+## LSA Types
+
+<figure><img src=".gitbook/assets/image (112).png" alt=""><figcaption></figcaption></figure>
+
+* **Type 1 (Router LSA)**
+  * Every OSPF router generates this type of LSA.
+  * It identifies the router using its router ID.
+  * It also lists networks attached to the router's OSPF-activated interfaces.
+* **Type 2 (Network LSA)**
+  * Generated by the DR of each 'multi-access' network (ie. the broadcast network type).
+  * Lists the routers which are attached to the multi-access network.
+* **Type 5 (AS-External LSA)**
+  * Generated by ASBRs to describe routes to destinations outside of the AS (OSPF domain).
