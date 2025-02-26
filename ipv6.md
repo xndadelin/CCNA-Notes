@@ -98,3 +98,138 @@ R1(config-if)#
 ```
 R1(config)# ipv6 unicast-routing
 ```
+
+## Configuring IPv6 addresses (EUI-64)
+
+* EUI stands for Extended Unique Identifier
+* EUI-64 is a method of converting a 48-bit MAC address into a 64-bit interface identifier, and this interface identifier can then become the ‘host portion’ of a /64 IPv6 address.
+* How to convert the MAC address:
+  * Divide the MAC address in half
+  * 1234 5678 90AB -> 1234 56 | 78 90AB
+  * Insert FFFE in the middle
+    * <mark style="color:blue;">1234 56</mark><mark style="color:yellow;">FF FE</mark><mark style="color:blue;">78 90AB</mark>
+  * Invert the 7th bit.
+    * <mark style="color:blue;">1</mark><mark style="color:red;">2</mark><mark style="color:blue;">34 56</mark><mark style="color:yellow;">FF FE</mark><mark style="color:blue;">78 90AB</mark>
+      * <mark style="color:blue;">00</mark><mark style="color:orange;">1</mark><mark style="color:blue;">0 -> 0000 ⇒ 1</mark><mark style="color:red;">0</mark><mark style="color:blue;">34 56</mark><mark style="color:yellow;">FF FE</mark><mark style="color:blue;">78 90AB</mark>
+
+```
+R1(config)#int g0/0
+R1(config-if)#ipv6 address 2001:db8::/64 eui-64
+R1(config-if)#no shutdown
+
+R1(config-if)#int g0/1
+R1(config-if)#ipv6 address 2001:db8:0:1::/64 eui-64
+R1(config-if)#no shutdown
+
+R1(config-if)#int g0/2
+R1(config-if)#ipv6 address 2001:db8:0:2::/64 eui-64
+R1(config-if)#no shutdown
+```
+
+### Why invert the 7th bit?
+
+* MAC addresses can be divided into two types:
+  * **UAA** (Universally Administered Address)
+    * Uniquely assigned to the device by the manufacturer
+  * **LAA** (Locally Administered Address)
+    * Manually assigned by an admin (with the `mac-address` command on the interface) or protocol. Doesn’t have to be globally unique.
+* You can identify a UAA or LAA by the 7th bit of the MAC address, called the U/L bit (Universal/Local bit):
+  * U/L bit set to `0` = **UAA**
+  * U/L bit set to `1` = **LAA**
+* In the context of IPv6 addresses/EUI-64, the meaning of the U/L bit is reversed:
+  * U/L bit set to `0` = The MAC address the EUI-64 interface ID was made from was an **LAA**
+  * U/L bit set to `1` = The MAC address the EUI-64 interface ID was made from was a **UAA**
+
+## Global unicast addresses
+
+* Global unicast IPv6 addresses are public addresses which can be used over the Internet.
+* You must register to use global unicast addresses. Because they are public addresses, it is expected that they are globally unique. If two companies use the same global unicast address range, there are going to be problems, like two homes having the exact same street address.
+* The range of addresses to be used for global unicast addresses was originally defined as\
+  2000::/3, which includes all addresses from 2000, followed by 7 quartets of 0s, through 3FFF,\
+  followed by seven quartets of Fs.
+* Now all addresses which aren’t reserved for other purposes are global\
+  unicast addresses.
+
+## Unique local addresses
+
+* Unique local IPv6 addresses are private addresses which cannot be used over the Internet.
+* You do not need to register to use them. They can be used freely within internal networks and don’t need to be globally unique.
+* Note that these addresses can’t be routed over the Internet, your ISP will simply drop packets destined for unique local addresses.
+* The address block FC00::/7 is reserved for unique local addresses, however a later update requires\
+  that the 8th bit be set to 1, so really all unique local addresses will begin with FD.
+* The global ID should be unique so that addresses don’t overlap when companies merge.
+
+FD45:93AC:8A8F:0001:0000:0000:0001/64
+
+* **Indicates a unique local address**
+* **40-bit 'global ID'**, which should be randomly generated
+* **16-bit 'subnet identifier'**, used by the enterprise to make various subnets
+* **64-bit 'interface identifier'**, the host portion of the address
+
+## Link local addresses
+
+* Link local IPv6 addresses are automatically generated on IPv6-enabled interfaces
+* Use this command to enable IPv6 on an interface.
+
+```
+R1(config-if)#ipv6 enable
+```
+
+* Link local addresses use the address block FE80::/10.
+* However, the standard states that the 54 bits after FE80/10 should all be 0, so you won’t actually see any link local addresses beginning with FE9, FEA, or FEB. Only FE8.
+* Then, the interface ID is generated using EUI-64 rules.
+* Link local means that these addresses are used for communication within a single link, a single subnet. Routers will not route packets with a link-local destination IPv6 address, they will not forward the packets between subnets.
+* So, what are some actual uses of link-local addresses?
+  * For example, routing protocol peerings. OSPFv3, used for IPv6, uses link-local addresses for neighbor adjacencies, sending LSAs, etc.
+  * They can also be used as the next-hop address for static routes.
+  * And neighbor discovery protocol, NDP, which is IPv6’s replacement for ARP, uses link-local addresses to function.
+
+## Multicast addreses
+
+* **Unicast** addresses are one-to-one.
+  * One source to one destination.
+* **Broadcast** addresses are one-to-all.
+  * One source to all destinations (within the subnet).
+* **Multicast** addresses are one-to-many.
+  * One source to multiple destinations (that have joined the specific multicast group).
+* IPv6 uses range `FF00::/8` for multicast. (`FF00::` to `FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF`)
+* IPv6 doesn’t use broadcast (there is no 'broadcast address' in IPv6!)
+
+| Purpose                                    | IPv6 Address | IPv4 Address |
+| ------------------------------------------ | ------------ | ------------ |
+| All nodes/hosts (functions like broadcast) | FF02::1      | 224.0.0.1    |
+| All routers                                | FF02::2      | 224.0.0.2    |
+| All OSPF routers                           | FF02::5      | 224.0.0.5    |
+| All OSPF DRs/BDRs                          | FF02::6      | 224.0.0.6    |
+| All RIP routers                            | FF02::9      | 224.0.0.9    |
+| All EIGRP routers                          | FF02::A      | 224.0.0.10   |
+
+### Multicast addresses scopes
+
+IPv6 defines multiple multicast ‘scopes’ which indicate how far the packet should be forwarded. The addresses in the previous slide all use the ‘link-local’ scope (FF02), which stays in the local subnet.
+
+#### IPv6 multicast scopes:
+
+* **Interface-local (FF01)**: The packet doesn’t leave the local device. Can be used to send traffic to a service within the local device.
+* **Link-local (FF02)**: The packet remains in the local subnet. Routers will not route the packet between subnets.
+* **Site-local (FF05)**: The packet can be forwarded by routers. Should be limited to a single physical location (not forwarded over a WAN).
+* **Organization-local (FF08)**: Wider in scope than site-local (an entire company/organization).
+* **Global (FF0E)**: No boundaries. Possible to be routed over the Internet.
+
+<figure><img src=".gitbook/assets/image (123).png" alt=""><figcaption></figcaption></figure>
+
+## Anycast addresses
+
+* **Anycast** is a new feature of IPv6.
+* **Anycast** is ‘one-to-one-of-many’.
+* Multiple routers are configured with the same IPv6 address:
+  * They use a routing protocol to advertise the address.
+  * When hosts send packets to that destination address, routers will forward it to the nearest router configured with that IP address (based on routing metric).
+* There is no specific address range for anycast addresses. Use a regular unicast address (global unicast, unique local) and specify it as an anycast address:
+
+```bash
+R1(config-if)# ipv6 address 2001:db8:1:1::99/128 anycast
+```
+
+## Other IPv6 addresses
+
