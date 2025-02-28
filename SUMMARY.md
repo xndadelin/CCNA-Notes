@@ -1,7 +1,6 @@
 # Table of contents
 
-* [Welcome](README.md)
-* [Network Devices](network-devices.md)
+* [Network Devices](README.md)
 * [Interfaces and Cables](interfaces-and-cables.md)
 * [OSI & TCP/IP](osi-and-tcp-ip.md)
 * [Cisco IOS CLI](cisco-ios-cli.md)
