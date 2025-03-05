@@ -233,3 +233,11 @@ R1(config-if)# ipv6 address 2001:db8:1:1::99/128 anycast
 
 ## Other IPv6 addresses
 
+* `::` = The unspecified IPv6 address\
+  ↳ Can be used when a device doesn’t yet know its IPv6 address.\
+  ↳ IPv6 default routes are configured to `::/0`\
+  ↳ IPv4 equivalent: `0.0.0.0`
+* `::1` = The loopback address\
+  ↳ Used to test the protocol stack on the local device.\
+  ↳ Messages sent to this address are processed within the local device, but not sent to other devices.\
+  ↳ IPv4 equivalent: `127.0.0.0/8` address range
