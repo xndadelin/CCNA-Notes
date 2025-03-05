@@ -241,3 +241,146 @@ R1(config-if)# ipv6 address 2001:db8:1:1::99/128 anycast
   ↳ Used to test the protocol stack on the local device.\
   ↳ Messages sent to this address are processed within the local device, but not sent to other devices.\
   ↳ IPv4 equivalent: `127.0.0.0/8` address range
+
+## RFC 5952
+
+{% hint style="info" %}
+RFC 5952 suggests standardizing IPv6 address representation.
+{% endhint %}
+
+* Leading 0s MUST be removed. 2001:0db8:0000:0001:0f2a:4fff:fea3:00b1 → 2001:db8:0:1:f2a:4fff:fea3:b1
+* `::` MUST be used to shorten the longest string of all-0 quartets.\
+  (If there is only one all-0 quartet, don’t use `::`) 2001:0000:0000:0000:0f2a:0000:0000:00b1 → 2001::f2a:0:0:b1
+* If there are two equal-length choices for `::`, use `::` to shorten the one on the left. 2001:0db8:0000:0000:0f2a:0000:0000:00b1 → 2001:db8::f2a:0:0:b1
+* Hexadecimal characters 'a', 'b', 'c', 'd', 'e', and 'f' MUST be written using lower-case, NOT upper-case A B C D E F.
+
+## IPv6 Header
+
+* Fixed size of 40 bytes.
+
+<figure><img src=".gitbook/assets/image (124).png" alt=""><figcaption></figcaption></figure>
+
+* **Version**
+  * Length: 4 bits
+  * Indicates the version of IP that is used.
+  * Fixed value of 6 (0b0110) to indicate IPv6.
+* **Traffic Class**
+  * Length: 8 bits
+  * Used for QoS (Quality of Service), to indicate high-priority traffic.
+  * For example, IP phone traffic, live video calls, etc., will have a Traffic Class value which gives them priority over other traffic.
+* **Payload Length**
+  * Length: 16 bits
+  * Indicates the length of the payload (the encapsulated Layer 4 segment) in bytes.
+  * The length of the IPv6 header itself isn’t included, because it’s always 40 bytes.
+* **Next Header**
+  * Length: 8 bits
+  * Indicates the type of the ‘next header’ (header of the encapsulated segment), for example, TCP or UDP.
+  * Same function as the IPv4 header’s 'Protocol' field.
+* **Hop Limit**
+  * Length: 8 bits
+  * The value in this field is decremented by 1 by each router that forwards it. If it reaches 0, the packet is discarded.
+  * Same function as the IPv4 header’s 'TTL' field.
+* **Source Address**
+  * Length: 128 bits
+  * These fields contain the IPv6 addresses of the packet’s source.
+* **Destination Address**
+  * Length: 128 bits
+  * These fields contain the IPv6 addresses of the packet’s intended destination.
+
+## Solicited-Node Multicast Address
+
+An IPv6 solicited-node multicast address is calculated from a unicast address.
+
+ff02:0000:0000:0000:0001:ff + Last 6 hex digits of unicast address
+
+1. Unicast address: `2001:0db8:0000:0001:0f2a:4fff:fea3:00b1`
+   * Solicited-Node Multicast address: `ff02::1:ff:a3:b1`
+2. Unicast address: `2001:0db8:0000:0001:0489:4eda:073a:12b8`
+   * Solicited-Node Multicast address: `ff02::1:ff:3a:12b8`
+
+## Neighbor Discovery Protocol
+
+* Neighbor Discovery Protocol (NDP) is a protocol used with IPv6.
+* It has various functions, and one of those functions is to replace ARP, which is no longer used in IPv6.
+* The ARP-like function of NDP uses ICMPv6 and solicited-node multicast addresses to learn the MAC address of other hosts.\
+  &#xNAN;_(ARP in IPv4 uses broadcast messages)_.
+* Two message types are used:
+  1. Neighbor Solicitation (NS) = ICMPv6 Type 135
+  2. Neighbor Advertisement (NA) = ICMPv6 Type 136
+
+<figure><img src=".gitbook/assets/image (125).png" alt=""><figcaption></figcaption></figure>
+
+<figure><img src=".gitbook/assets/image (126).png" alt=""><figcaption></figcaption></figure>
+
+### IPv6 Neighbor Table
+
+<figure><img src=".gitbook/assets/image (127).png" alt=""><figcaption></figcaption></figure>
+
+### NDP Router Discovery Function
+
+* Another function of NDP allows hosts to automatically discover routers on the local network.
+* Two messages are used for this process:
+  1. **Router Solicitation (RS) = ICMPv6 Type 133**
+     * Sent to multicast address FF02::2 (all routers).
+     * Asks all routers on the local link to identify themselves.
+     * Sent when an interface is enabled/host is connected to the network.
+  2. **Router Advertisement (RA) = ICMPv6 Type 134**
+     * Sent to multicast address FF02::1 (all nodes).
+     * The router announces its presence, as well as other information about the link.
+     * These messages are sent in response to RS messages.
+     * They are also sent periodically, even if the router hasn’t received an RS.
+
+### Stateless Address Auto-configuration (SLAAC)
+
+* Stands for **Stateless Address Auto-configuration**.
+* Hosts use the RS/RA messages to learn the IPv6 prefix of the local link (i.e. `2001:db8::/64`), and then automatically generate an IPv6 address.
+* Using the `ipv6 address prefix/prefix-length eui-64` command, you need to manually enter the prefix.
+* Using the `ipv6 address autoconfig` command, you don’t need to enter the prefix. The device uses NDP to learn the prefix used on the local link.
+* The device will use EUI-64 to generate the interface ID, or it will be randomly generated (depending on the device/maker).
+* Standard function of IPv6, not Cisco special.
+
+## Duplicate Address Detection (DAD)
+
+* **Duplicate Address Detection (DAD)** allows hosts to check if other devices on the local link are using the same IPv6 address.
+* Any time an IPv6-enabled interface initializes (no `shutdown` command), or an IPv6 address is configured on an interface (by any method: manual, SLAAC, etc.), it performs DAD.
+* DAD uses two messages you learned earlier: NS and NA.
+* The host will send an NS to its own IPv6 address. If it doesn’t get a reply, it knows the address is unique.
+* If it gets a reply, it means another host on the network is already using the address.
+
+## IPv6 Static Routing
+
+* **IPv6 routing** works the same as **IPv4 routing**.
+* However, the two processes are separate on the router, and the two routing tables are separate as well.
+* **IPv4 routing** is enabled by default.
+* **IPv6 routing** is disabled by default, and must be enabled with `ipv6 unicast-routing`.
+* If **IPv6 routing** is disabled, the router will be able to send and receive IPv6 traffic, but will not **route** IPv6 traffic (= will not forward it between networks
+* A connected **network route** is automatically added for each connected network.
+* A local **host route** is automatically added for each address configured on the router.
+* Routes for link-local addresses are not added to the routing table.
+
+```
+ipv6 route destination/prefix-length {next-hop | exit-interface [next-hop]} [ad]
+```
+
+## Static Routes
+
+#### Directly attached static route: Only the exit interface is specified.
+
+```
+ipv6 route destination/prefix-length exit-interface
+```
+
+* In IPv6, you cannot use directly attached static routes if the interface is an Ethernet interface.
+
+#### Recursive static route: Only the next hop is specified.
+
+```
+ipv6 route destination/prefix-length next-hop
+```
+
+#### Fully specified static route: Both the exit interface and next hop are specified.
+
+```
+ipv6 route destination/prefix-length exit-interface next-hop
+```
+
