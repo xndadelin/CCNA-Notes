@@ -1,4 +1,5 @@
 ---
+description: CCNA notes!
 icon: face-cowboy-hat
 ---
 
