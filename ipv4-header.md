@@ -4,7 +4,7 @@ icon: h4
 
 # IPv4 Header
 
-<figure><img src=".gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (39).png" alt=""><figcaption></figcaption></figure>
 
 ## Version field
 

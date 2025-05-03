@@ -63,7 +63,7 @@ Those two usually not considered part of the Ethernet header, although it is sen
 * The last 3 bytes are unique to the device itself.
 * MAC addresses are written as a series of 12 hexadecimal characters.
 
-<figure><img src="../.gitbook/assets/image (26).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (55).png" alt=""><figcaption></figcaption></figure>
 
 * So here’s a simple network, just three PCs connected to a switch. Notice the interface names for the switch, F0/1, F0/2, and F0/3.
 * F means Fast Ethernet, so these are 100 megabit per second interfaces. I’ve also written the MAC address for each PC. Notice each MAC address is a series of 12 hexadecimal digits, separated by periods. You may also see periods after every other digit, so for example PC1’s MAC address would be AA dot AA dot AA dot 00 dot 00 dot 01. But I tend to write them after every fourth character.
@@ -87,7 +87,7 @@ Those two usually not considered part of the Ethernet header, although it is sen
 
 * Encapsulated within that frame is an Internet Protocol, known as IP packet, and that IP packet includes a source and destination IP address.
 
-<figure><img src="../.gitbook/assets/image (65).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (94).png" alt=""><figcaption></figcaption></figure>
 
 * For example, if PC1 wants to send data to PC3, the source IP will be 192.168.1.1 and the destination IP will be 192.168.1.3. The source MAC will be 0C2F.B011.9D00, however PC1 doesn’t actually know PC3’s MAC address.
 * When you send data to another computer, you enter the IP address, not the MAC address. So, the user entered the IP address 192.168.1.3 as the destination, but PC1 has to discover PC3’s MAC address by itself. Remember, these switches are Layer 2 devices, they don’t operate at Layer 3, so they need to use MAC addresses, not IP addresses.&#x20;
@@ -115,7 +115,7 @@ ARP - Address Resolution Protocol
 arp -a
 ```
 
-<figure><img src="../.gitbook/assets/image (66).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (95).png" alt=""><figcaption></figcaption></figure>
 
 * Internet Adresss = IP address (Layer 3 address)
 * Physical Address = MAC address (Layer 2 address)

@@ -1,6 +1,6 @@
 ---
-icon: '4'
 description: This is based on the Layer 3 of the OSI model, where routers operate.
+icon: '4'
 ---
 
 # IPv4 Addressing
@@ -11,7 +11,7 @@ The broadcast of frames to end devices is limited to the local network, it does 
 
 ## IPv4
 
-<figure><img src=".gitbook/assets/image (67).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (96).png" alt=""><figcaption></figcaption></figure>
 
 * Source IP Address & Destination IP Address
   * These fields are both 32-bits (4 bytes) in length, as you can see they stretch from 0 to 31 in this chart.
@@ -109,9 +109,9 @@ $$
 
 ## First / Last Usable Address
 
-<figure><img src=".gitbook/assets/image (23).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (52).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src=".gitbook/assets/image (24).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (53).png" alt=""><figcaption></figcaption></figure>
 
 ## Commands
 

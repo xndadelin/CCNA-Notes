@@ -145,7 +145,7 @@ In order to work out this, you need to make all the host bits 0 or make an AND b
 
 **V**ariable-**L**ength **S**ubnet **M**ask is the process of creating subnets of different sizes, to make your use of network addresses more efficient.
 
-<figure><img src="../.gitbook/assets/image (80).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (109).png" alt=""><figcaption></figcaption></figure>
 
 We have to subnet the **192.168.1.0/24** in order to accomodate all the LANs.
 

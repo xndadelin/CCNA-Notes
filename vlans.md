@@ -10,7 +10,7 @@ icon: earth-asia
 * A LAN is a single broadcast domain, including all devices in that broadcast domain.
 * A broadcast domain is the group of devices which will receive a broadcast frame (destination MAC FFFF.FFFF.FFFF) sent by any one of the members)
 
-<figure><img src="../.gitbook/assets/image (71).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (100).png" alt=""><figcaption></figcaption></figure>
 
 This is not necessarily the best setup, for both security and performance purposes. It would be best to separate this into separate subnets.
 
@@ -22,7 +22,7 @@ As for security, even within the same office, you want to limit who has access t
 
 ## Segmenting at Layer 3 (Subnets)
 
-<figure><img src="../.gitbook/assets/image (73).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (102).png" alt=""><figcaption></figcaption></figure>
 
 For each subnet, the router is required to have 3 separate interfaces.
 
@@ -31,7 +31,7 @@ When a PC from the engineering department tries to ping the sales department, th
 * Although we separated the three departments into three subnets (Layer 3), they are still in the same broadcast domain (Layer 2)
   * One possible solution is to buy different switchs for each department. However, that is not very flexible and not cheap. This is where VLANs are coming. We use them to separate departments at layer 2.
 
-<figure><img src="../.gitbook/assets/image (74).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (103).png" alt=""><figcaption></figcaption></figure>
 
 Assigning the hosts the the VLANs will be done by configuring them on switch, more specifically on the switch interfaces. We configure the switch interface to be in a specific VLAN and then the endhost connected to that interface is part of that VLAN. The switch will consider each VLAN as a separate LAN, and will not forward traffic between VLANs, including broadcast/unknown unicast traffic.
 
@@ -46,7 +46,7 @@ Switches do not forward traffic directly between hosts in different VLANs. The s
 
 ## VLAN configuration
 
-<figure><img src="../.gitbook/assets/image (75).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (104).png" alt=""><figcaption></figcaption></figure>
 
 ### Default VLANs
 
@@ -54,7 +54,7 @@ Switches do not forward traffic directly between hosts in different VLANs. The s
 SW1#show vlan brief
 ```
 
-<figure><img src="../.gitbook/assets/image (76).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (105).png" alt=""><figcaption></figcaption></figure>
 
 * This command displays the VLANs configured on the switch and which interfaces are in each VLAN.
 * VLAN1 - is the default VLAN and it includes all interfaces connected to the switch.
@@ -65,7 +65,7 @@ VLANs 1, 1002 - 1005 exist by default and cannot be deleted.
 
 ### Assign interfaces to VLAN
 
-<figure><img src="../.gitbook/assets/image (77).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (106).png" alt=""><figcaption></figcaption></figure>
 
 * First, you use the interface range command to configure the interfaces from g1/0 - 3.
 * Use this command to set the interface as an access port
@@ -82,7 +82,7 @@ SW1(config-if-range)#switchport mode access
 SW1(config-if-range)#switchport access vlan 10
 ```
 
-<figure><img src="../.gitbook/assets/image (78).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (107).png" alt=""><figcaption></figcaption></figure>
 
 To enter a VLAN's configuration mode:
 
@@ -98,11 +98,11 @@ To name the VLAN:
 SW1(config-vlan)#name ENGINEERING
 ```
 
-<figure><img src="../.gitbook/assets/image (79).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (108).png" alt=""><figcaption></figcaption></figure>
 
 ## Review of topology
 
-<figure><img src="../.gitbook/assets/image (81).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (110).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 There is no link in VLAN20 between SW1 and SW2. This is because there are no PCs in VLAN20 connected to SW1. PCs in VLAN20 can still reach PCs connected to SW1, R1 will perform inter-VLAN routing.
@@ -114,7 +114,7 @@ There is no link in VLAN20 between SW1 and SW2. This is because there are no PCs
 * However, when the number of VLANs increases, this is not viable. It will result in wasted interfaces, and often routers will not have enough interfaces for each VLAN.
 * You can use <mark style="color:yellow;">trunk ports</mark> to carry traffic from multiple VLANs over a single interface.
 
-<figure><img src="../.gitbook/assets/image (82).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (111).png" alt=""><figcaption></figcaption></figure>
 
 For example, if a PC from VLAN10(right) sends data to VLAN10(left), it will go trough SW1 and SW2. SW1 will know from which VLAN did the data come, but how does SW1 know it? The answer is:
 
@@ -154,9 +154,9 @@ For example, if a PC from VLAN10(right) sends data to VLAN10(left), it will go t
               * Therefore, the actual range of VLAN is 1 - 4094
               * Cisco's proprietary ISL also has a VLAN range of 1 - 4094
 
-<figure><img src="../.gitbook/assets/image (83).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (112).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src="../.gitbook/assets/image (84).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (113).png" alt=""><figcaption></figcaption></figure>
 
 ### VLAN Ranges
 
@@ -174,14 +174,14 @@ For example, if a PC from VLAN10(right) sends data to VLAN10(left), it will go t
 
 ### Trunk Configuration
 
-<figure><img src="../.gitbook/assets/image (85).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (114).png" alt=""><figcaption></figcaption></figure>
 
 * Many modern switches do not support Cisco's ISL at all. They only support 802.1Q.
 * However, switches that do support both (like the one used in this example) have a trunk encapsulation of 'Auto' by default
 * To manually configure the interface as a trunk port, you must first set the encapsulation to 802.1Q or ISL. On switches that only support 802.1Q, this is not necessary.
 * After you set the encapsulation type, you can then configure the interface as a trunk.
 
-<figure><img src="../.gitbook/assets/image (86).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (115).png" alt=""><figcaption></figcaption></figure>
 
 | Option   | Syntax                                             | Explanation                                                                                                                        |
 | -------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
@@ -212,7 +212,7 @@ Use the show interfaces trunk command instead to confirm trunk ports.
 
 There is one single interface connecting the router to the switch. The single interface is divided into three subinterfaces.
 
-<figure><img src="../.gitbook/assets/image (89).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (118).png" alt=""><figcaption></figcaption></figure>
 
 * There are 3 logical subinterfaces, which makes up for one physical interface and they operate like 3 separate interfaces.
 

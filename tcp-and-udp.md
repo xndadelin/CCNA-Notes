@@ -50,22 +50,22 @@ icon: truck-arrow-right
 
 ### Establishing connections: 3-way handshake
 
-<figure><img src=".gitbook/assets/image (115).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (144).png" alt=""><figcaption></figcaption></figure>
 
 ### Terminating connections: 4-way handshake
 
-<figure><img src=".gitbook/assets/image (116).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (145).png" alt=""><figcaption></figcaption></figure>
 
 ### Sequencing / Acknowledgment
 
-<figure><img src=".gitbook/assets/image (117).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (146).png" alt=""><figcaption></figcaption></figure>
 
 * Hosts set a random initial sequence number.
 * Forward acknowledgement is used to indicate the sequence number of the next segment the host expects to receive.
 
 ### Retransmission
 
-<figure><img src=".gitbook/assets/image (118).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (147).png" alt=""><figcaption></figcaption></figure>
 
 ### Flow control: Window Size
 
@@ -73,7 +73,7 @@ icon: truck-arrow-right
 * However, the TCP header’s window size field allows more data to be sent before an acknowledgment is required.
 * In addition, a ‘sliding window’ is used to dynamically adjust how large the window size is.
 
-<figure><img src=".gitbook/assets/image (119).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (148).png" alt=""><figcaption></figcaption></figure>
 
 ## UDP
 

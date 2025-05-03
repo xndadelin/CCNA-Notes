@@ -25,7 +25,7 @@ Or, if the destination is directly connected to the router, send the packet dire
 
 Or, if the destination is the router's own IP adress, receive the packet for yourself (do not forward it).
 
-<figure><img src="../.gitbook/assets/image (70).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (99).png" alt=""><figcaption></figcaption></figure>
 
 ### Routing table&#x20;
 

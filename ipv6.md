@@ -65,15 +65,15 @@ $$
 
 ## Finding the IPv6 prefix
 
-<figure><img src=".gitbook/assets/image (120).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (149).png" alt=""><figcaption></figcaption></figure>
 
 * Even if the prefix length isn’t /64, if the prefix length is a multiple of 4 it’s easy to find the prefix length. Why is that? It’s because each hexadecimal character is 4 bits. 56 is a multiple of 4, so let me show you how to find the prefix of this IPv6 address. This first quartet is the first 16 bits of the address. This one brings it to 32 bits. 48 bits. This 2 contains the next 4 bits, so 52. And this 1 contains another 4 bits, so 56 bits. So, these first 14 characters are the network portion of the address, the prefix. Everything after is the host portion, so we can change them all to 0 to find the prefix.
 
-<figure><img src=".gitbook/assets/image (121).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (150).png" alt=""><figcaption></figcaption></figure>
 
 ## Configuring IPv6 addresses
 
-<figure><img src=".gitbook/assets/image (122).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (151).png" alt=""><figcaption></figcaption></figure>
 
 ```
 R1(config)#
@@ -216,7 +216,7 @@ IPv6 defines multiple multicast ‘scopes’ which indicate how far the packet s
 * **Organization-local (FF08)**: Wider in scope than site-local (an entire company/organization).
 * **Global (FF0E)**: No boundaries. Possible to be routed over the Internet.
 
-<figure><img src=".gitbook/assets/image (123).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (152).png" alt=""><figcaption></figcaption></figure>
 
 ## Anycast addresses
 
@@ -258,7 +258,7 @@ RFC 5952 suggests standardizing IPv6 address representation.
 
 * Fixed size of 40 bytes.
 
-<figure><img src=".gitbook/assets/image (124).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (153).png" alt=""><figcaption></figcaption></figure>
 
 * **Version**
   * Length: 4 bits
@@ -308,13 +308,13 @@ ff02:0000:0000:0000:0001:ff + Last 6 hex digits of unicast address
   1. Neighbor Solicitation (NS) = ICMPv6 Type 135
   2. Neighbor Advertisement (NA) = ICMPv6 Type 136
 
-<figure><img src=".gitbook/assets/image (125).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (154).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src=".gitbook/assets/image (126).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (155).png" alt=""><figcaption></figcaption></figure>
 
 ### IPv6 Neighbor Table
 
-<figure><img src=".gitbook/assets/image (127).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (156).png" alt=""><figcaption></figcaption></figure>
 
 ### NDP Router Discovery Function
 

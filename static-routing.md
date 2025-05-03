@@ -4,7 +4,7 @@ icon: route
 
 # Static Routing
 
-<figure><img src=".gitbook/assets/image (1) (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (30).png" alt=""><figcaption></figcaption></figure>
 
 If R2 receives packets with the destination address different than the neighborhed networks and routers, it will drop it, because it the routing table does not contain a route to the specific network.&#x20;
 
@@ -38,7 +38,7 @@ R1 already has a Connected route to 192.168.1.0/24. R4 already has a Connected r
 
 * The other routes must be manually configured (using Static routes)
 
-<figure><img src=".gitbook/assets/image (2) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (31).png" alt=""><figcaption></figcaption></figure>
 
 &#x20;
 
@@ -49,9 +49,9 @@ R1 already has a Connected route to 192.168.1.0/24. R4 already has a Connected r
 <pre><code>R1(config)# <a data-footnote-ref href="#user-content-fn-1">ip route</a> ip-address net-mask next-hop
 </code></pre>
 
-<figure><img src=".gitbook/assets/image (3) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (32).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src=".gitbook/assets/image (5) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (34).png" alt=""><figcaption></figcaption></figure>
 
 ## Static Route Configuration with exit-interface
 
@@ -66,7 +66,7 @@ R2(config)# ip route ip-address netmask exit-interface
 R2(config)# ip route ip-address netmask exit-interface next-hop
 ```
 
-<figure><img src=".gitbook/assets/image (6) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (35).png" alt=""><figcaption></figcaption></figure>
 
 When you configure the static route with the _exit-interface_ option, it will be described as a directly connected route, but it is a static route.
 
@@ -80,9 +80,9 @@ When you configure the static route with the _exit-interface_ option, it will be
   * If the router does not have any more specific routes that match a packet's destination IP address, the router will forward the packet using the default route.
   * Is often used to direct traffic to the Internet.
 
-<figure><img src=".gitbook/assets/image (7) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (36).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src=".gitbook/assets/image (8) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (37).png" alt=""><figcaption></figcaption></figure>
 
 * Gateway of last resort is not set
   * Which means that no default reoute has been configured yet.
@@ -93,7 +93,7 @@ In order to configure a default router, one has to type the command:
 R1(config)# ip route 0.0.0.0 0.0.0.0 203.0.113.2
 ```
 
-<figure><img src=".gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (38).png" alt=""><figcaption></figcaption></figure>
 
 
 

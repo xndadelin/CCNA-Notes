@@ -1,6 +1,6 @@
 ---
-icon: bomb
 description: Dynamic routing protocol
+icon: bomb
 ---
 
 # OSPF
@@ -16,7 +16,7 @@ description: Dynamic routing protocol
 
 ## LSA Flooding
 
-<figure><img src=".gitbook/assets/image (92).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (121).png" alt=""><figcaption></figcaption></figure>
 
 * OSPF is enabled on R4's G1/0 interface.
 * R4 creates an LSA to tell its neighbors about the network on G1/0.
@@ -42,9 +42,9 @@ description: Dynamic routing protocol
   * Any small change in the network causes every router to flood LSAs and run the SPF algorithm again.
 * By dividing a large OSPF network into several smaller areas, you can avoid the above negative effects.
 
-<figure><img src=".gitbook/assets/image (93).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (122).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src=".gitbook/assets/image (94).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (123).png" alt=""><figcaption></figcaption></figure>
 
 * An area is a set of routers and links that share the same LSDB.
 * The backbone area (area 0) is an area that all other areas must connect to.
@@ -64,7 +64,7 @@ description: Dynamic routing protocol
 
 ## Basic OSPF Configuration
 
-<figure><img src=".gitbook/assets/image (95).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (124).png" alt=""><figcaption></figcaption></figure>
 
 ```
 R1(config)#router ospf ?
@@ -170,13 +170,13 @@ Gi0/0        1     0           10.0.13.2/30        100    DR    1/1
 * OSPF messages are encapsulated in an IP header, and the ‘protocol’ field of the IP header has a value of 89 to indicate OSPF.
 * For OSPF routers to become neighbors they have to go through various neighbor states.
 
-<figure><img src=".gitbook/assets/image (98).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (127).png" alt=""><figcaption></figcaption></figure>
 
 * Let’s assume OSPF is already activated on R2’s G0/0 interface.
 * Then, OSPF is activated on R1’s G0/0 interface.&#x20;
 * It sends an OSPF hello message to 224.0.0.5.
 
-<figure><img src=".gitbook/assets/image (99).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (128).png" alt=""><figcaption></figcaption></figure>
 
 ### Down State
 
@@ -230,7 +230,7 @@ Gi0/0        1     0           10.0.13.2/30        100    DR    1/1
 * In the Exchange state they exchanged DBD packets, so they know which LSAs their neighbors are holding. So, these LSRs are used to request any missing LSAs to make sure each router has the same LSAs.
 * Then the LSAs themselves are sent in Link State Update, LSU, messages. R2 sends R1 the requested LSAs in an LSU like this. R1 will also do the same for R2. Finally, The routers send LSAck messages, another kind of OSPF message, to acknowledge that they received the LSAs. Now the loading state is complete, and the routers have the same LSDB.
 
-<figure><img src=".gitbook/assets/image (100).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (129).png" alt=""><figcaption></figcaption></figure>
 
 ### Full state
 
@@ -241,7 +241,7 @@ Gi0/0        1     0           10.0.13.2/30        100    DR    1/1
 * If the neighbors remain up, the routers will continue to share LSAs as the network changes to make sure each router has a complete and accurate map of the network.
 * This is the main advantage of dynamic routing protocols, the routers automatically react to changes in the network and add, remove, or change routes as necessary.
 
-<figure><img src=".gitbook/assets/image (103).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (132).png" alt=""><figcaption></figcaption></figure>
 
 | Type | Name                               | Purpose                                                                                  |
 | ---- | ---------------------------------- | ---------------------------------------------------------------------------------------- |
@@ -313,7 +313,7 @@ R1(config-router)#no passive-interface g1/0
 
 ### Broadcast Network Type
 
-<figure><img src=".gitbook/assets/image (105).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (134).png" alt=""><figcaption></figcaption></figure>
 
 * This network type is enabled on Ethernet and FDDI interfaces by default.
 * In the network diagram above, these are all Ethernet connections, and therefore these connections between the routers are all using the Broadcast network type.
@@ -324,7 +324,7 @@ R1(config-router)#no passive-interface g1/0
 * Routers which aren’t the DR or BDR for the subnet become a ‘DROther’.
 * Each subnet needs a DR. These subnets are easy, there are no OSPF neighbors so each router becomes the DR for the subnet.
 
-<figure><img src=".gitbook/assets/image (106).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (135).png" alt=""><figcaption></figcaption></figure>
 
 * How about the 192.168.1.0/30 subnet between R1 and R2?
 * Let’s say R2 is the DR.
@@ -333,7 +333,7 @@ R1(config-router)#no passive-interface g1/0
 
 #### DR/BDR election
 
-<figure><img src=".gitbook/assets/image (107).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (136).png" alt=""><figcaption></figcaption></figure>
 
 * There is an order of priority.
   * First up, the router with the highest OSPF interface priority in the subnet becomes the DR for the segment.
@@ -359,7 +359,7 @@ R2(config-if)#ip ospf priority <1-255>
 
 ### Point-to-Point Network Type
 
-<figure><img src=".gitbook/assets/image (108).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (137).png" alt=""><figcaption></figcaption></figure>
 
 * This network type is enabled on serial interfaces using the PPP or HDLC encapsulations by default.
 * PPP and HDLC are both Layer 2 encapsulations, similar to Ethernet, except they are used on serial connections.
@@ -369,7 +369,7 @@ R2(config-if)#ip ospf priority <1-255>
 
 #### Serial Interfaces
 
-<figure><img src=".gitbook/assets/image (110).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (139).png" alt=""><figcaption></figcaption></figure>
 
 ```
 R1(config)#interface s2/0
@@ -420,7 +420,7 @@ The non-broadcast network type uses a default Hello timer of 30 seconds and Dead
 
 ## Neighbors Requirements
 
-<figure><img src=".gitbook/assets/image (111).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (140).png" alt=""><figcaption></figcaption></figure>
 
 1. Area number must match.
 2. Interfaces must be in the same subnet.
@@ -445,7 +445,7 @@ R2(config-if)#
 
 ## LSA Types
 
-<figure><img src=".gitbook/assets/image (112).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (141).png" alt=""><figcaption></figcaption></figure>
 
 * **Type 1 (Router LSA)**
   * Every OSPF router generates this type of LSA.

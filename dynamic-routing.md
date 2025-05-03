@@ -7,7 +7,7 @@ icon: arrow-down-up-across-line
 * A network route is a route to a network/subnet with the mask length less than 32.
 * A host route is a route to a specific host, specified with a /32 mask.
 
-<figure><img src=".gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
 
 Instead of configuring static routes on each routers, you can enable the dynamic routing protocol. Then R4 wil advertise to its neighbor that it can reach 192.168.4.0/24 via itself. R2 will add this route to its routing table. R2 will advertise to its neighbor R1 that it can reach 192.168.4.0/24 via itself and so on.
 

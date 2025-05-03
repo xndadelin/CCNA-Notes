@@ -9,7 +9,7 @@ icon: globe
 * A networking protocol is a set of (logical) rules defining how network devices and software should work.
 * The OSI model is one attempt at standardizing network communications. (not actually in use today, but it has had a big impact on how network engineers think about networking, and we still refer to it today).
 
-<figure><img src="../.gitbook/assets/image (59).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (88).png" alt=""><figcaption></figcaption></figure>
 
 ## OSI Model
 
@@ -28,11 +28,11 @@ icon: globe
 * **De-encapsulation** - The data is processed through the OSI stack, from 1 to 7, the additions of the layers are stripped off until the data reaches the application layer of the neighboring system. So basically, the additional information is removed as the data is processed up the stack.
 * Both the encapsulation and de-encapsulation processes are examples of '**Adjacent-layer interaction**'. Interaction between the different layers of the OSI model.
 
-<figure><img src="../.gitbook/assets/image (60).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (89).png" alt=""><figcaption></figcaption></figure>
 
 * The communications between the application layers of the two different systems is called '**same-layer interaction**'. This is what allows the application layer to perform its functions of identifying communication partners, synchronizing communications etc.
 
-<figure><img src="../.gitbook/assets/image (61).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (90).png" alt=""><figcaption></figcaption></figure>
 
 * Application developers work with the top layers of the OSI model to connect their applications over networks.
 * The combination of data, Layer 4 header and Layer 3 header, is called a packet. Next, the packet is further encapsulated at Layer 2, this time with both a Layer 2 header and a Layer 2 Trailer. This is called a frame. This frame is then sent over the connection whether it's electrical signals over a wire or wireless signals in the case of WI-FI, to the neighboring system.
@@ -42,7 +42,7 @@ icon: globe
 * The term that is used to refer to Data, Segment, Packet, Frame is called PDU (**Protocol Data Units**).
 * At Layer 1, the physical layer, the name for the PDU is bit, referring to the bits being transferred on the wire.&#x20;
 
-<figure><img src="../.gitbook/assets/image (62).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (91).png" alt=""><figcaption></figcaption></figure>
 
 ## TCP / IP Suite
 
@@ -65,6 +65,6 @@ icon: globe
 * The Network Layer of the OSI model maps to the Internet Layer of the TCP/IP model.
 * The Data Link and Physical Layers of the OSI model are equivalent to the Link layer of the TCP/IP model.&#x20;
 
-<figure><img src="../.gitbook/assets/image (63).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (92).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src="../.gitbook/assets/image (64).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (93).png" alt=""><figcaption></figcaption></figure>

@@ -6,24 +6,24 @@ icon: ethernet
 
 ## Intro
 
-<figure><img src=".gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
 
 * ASW1 (Access layer switch) is a switch that end hosts connect to.
 * DSW1 (Distribution layer switch) is a switch that access layer switches connect to.&#x20;
 * If there are 40 hosts connected to ASW1, the connection is congested. The admin should add another link to increase the bandwidth, so it can support all of the end hosts.
 
-<figure><img src=".gitbook/assets/image (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
 
 The network is still congested, and users are reporting problems. SO, the admin adds another link.
 
-<figure><img src=".gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
 
 When the bandwidth of the interfaces connected to end hosts is greater than the bandwidth of the connection to the distribution switch(es), this is called **oversubscription**.\
 Some oversubscription is acceptable, but too much will cause congestion.
 
 Even with three links, the congestion does not seem any better. SO it adds again another link.
 
-<figure><img src=".gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (8).png" alt=""><figcaption></figcaption></figure>
 
 If you connect two switches together with multiple links, all except one will be disabled by STP.
 
@@ -37,7 +37,7 @@ An EtherChannel is represented in network diagrams by drawing a circle around th
 * EtherChannel groups multiple interfaces together to act as a single interface.
 * STP will treat this group as a single interface.
 
-<figure><img src=".gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
 
 * Traffic using the EtherChannel will be load balanced among the physical interfaces in the group. An algoritm is used to determine which traffic will use which physical interface.
 * Other names for EtherChannel are:
@@ -208,7 +208,7 @@ ASM1(config-if-range)#
 
 ## Layer 3 EtherChannels
 
-<figure><img src=".gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
 
 ```
 ASM1(config)#int range g0/0 - 3

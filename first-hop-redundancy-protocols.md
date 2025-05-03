@@ -4,7 +4,7 @@ icon: frog
 
 # First Hop Redundancy Protocols
 
-<figure><img src=".gitbook/assets/image (114).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (143).png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 A first hop redundancy protocol (FHRP) is a computer networking protocol which is designed to protect the default gateway used on a subnetwork by allowing two or more routers to provide backup for that address; in the event of failure of an active router, the backup router will take over the address, usually within a few seconds.

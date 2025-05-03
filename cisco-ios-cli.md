@@ -11,7 +11,7 @@ icon: rectangle-terminal
 * It's the interface you use to configure Cisco Devices.
 * To connect to a device's console you use a USB mini-b cable or a cable with a RJ45 end and a serial port end. This cable is called a '**rollover cable**' and have a specific pin connection. However, most laptops nowadays don't have a serial port, so we use an adapter.&#x20;
 
-<figure><img src="../.gitbook/assets/image (57).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (86).png" alt=""><figcaption></figcaption></figure>
 
 ## Terminal Emulator (PuTTy)
 
@@ -21,7 +21,7 @@ icon: rectangle-terminal
 * The **enable** command in user EXEC mode places you in privileged exec mode. It is indicated by the '**#**' sign. It provides complete access to view the device's configuration, restart the device, etc. Cannot change the configuration, but can change the time on the device, save the configuration file etc.
 * Use a question mark '**?**' to view the available commands.
 
-<figure><img src="../.gitbook/assets/image (58).png" alt=""><figcaption><p>#</p></figcaption></figure>
+<figure><img src=".gitbook/assets/image (87).png" alt=""><figcaption><p>#</p></figcaption></figure>
 
 ### Global Configuration Mode
 

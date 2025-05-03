@@ -1,6 +1,6 @@
 ---
-icon: tree
 description: STP is a Layer 2 protocol. It enables redundant Layer 2 networks.
+icon: tree
 ---
 
 # Spanning Tree Protocol
@@ -14,7 +14,7 @@ description: STP is a Layer 2 protocol. It enables redundant Layer 2 networks.
 
 ## Broadcast storms
 
-<figure><img src=".gitbook/assets/image (5) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (21).png" alt=""><figcaption></figcaption></figure>
 
 * If PC1 want to send some traffic to PC2, it needs to know PC2 MAC's address. so PC1 sends an ARP Request frame, which is a broadcast frame. The switches will flood it out all of its interfaces, except the one it was received on, therefore creating a loop.
 * If enough of these looped broadcasts accumulate in the network, the network will be too congested for legitimate traffic to use the network. This is called a **broadcast storm.**
@@ -40,13 +40,13 @@ Before the switch, there was a device called Bridge. It's like a transitional st
 
 ## Demonstration and algorithm
 
-<figure><img src=".gitbook/assets/image (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (22).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src=".gitbook/assets/image (2) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (23).png" alt=""><figcaption></figcaption></figure>
 
 For example if the SW1-SW2 link fails, it will automatically adjust to it.
 
-<figure><img src=".gitbook/assets/image (3) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (24).png" alt=""><figcaption></figcaption></figure>
 
 * By selecting which ports are forwarding and which ports are blocking, STP creates a single path to and from each point in the network. This prevents Layer 2 loops.
 * There is a set process that STP uses to determine which ports should be forwarding and which should be blocking.
@@ -61,19 +61,19 @@ ALL ports on the **root bridge** are put in a forwarding state, and other switch
 
 Traditionally, the bridge ID field of the spanning tree BPDU looked like this:
 
-<figure><img src=".gitbook/assets/image (4) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (25).png" alt=""><figcaption></figcaption></figure>
 
 The default bridge priority is 32768 on all switches, so by default the MAC address is used as the tie-breaker. The switch with the lowest bridge ID becomes the root bridge, so therefore by default the switch with the lowest MAC address becomes the root bridge.
 
 The Bridge Priority is compared first. If they tie, the MAC address is then compared.
 
-<figure><img src=".gitbook/assets/image (5) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (26).png" alt=""><figcaption></figcaption></figure>
 
 The G0/2 interface on each switch is connected to a PC, so because it isn’t receiving any BPDUs, it knows it is safe to go into forwarding mode, there is no risk of creating a Layer 2 loop.
 
 Now, all three switches have the default priority of 32768, so in order to know which one will be the root bridge we will have to compare the MAC addresses. Remember, the LOWEST bridge ID wins. Which of these MAC addresses is the lowest? Well, hexadecimal A is equal to 10, B is equal to 11, and C is equal to 12, so SW1 has the lowest MAC address. Therefore, SW1 will become the root bridge of this network. All ports on the root bridge become designated ports, in a forwarding state. So, that is the traditional bridge ID.
 
-<figure><img src=".gitbook/assets/image (6) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (27).png" alt=""><figcaption></figcaption></figure>
 
 ## PVST (Extended System ID)
 
@@ -81,7 +81,7 @@ However, the bridge ID was actually updated to look like this. In reality, the b
 
 Why include a VLAN ID in the bridge priority? Well, Cisco switches use a version of STP called **PVST**, which stands for Per-VLAN Spanning Tree. PVST runs a separate STP ‘instance’ in each VLAN, so in each VLAN different interfaces can be forwarding or blocking. One interface could be forwarding in VLAN1, but blocking in VLAN2, for example. By adding the VLAN ID into the bridge priority, the switch will have a different bridge ID in each VLAN.
 
-<figure><img src=".gitbook/assets/image (7) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (28).png" alt=""><figcaption></figcaption></figure>
 
 * You may have wondered why 32768 is the default bridge priority. Well, it’s because this total field is 16 bits in length, and the most significant bit is set to 1 by default.&#x20;
 * Therefore, the default bridge priority WAS 32768. However, with the addition of the extended-system ID, adding the VLAN ID number to the bridge priority, that changed.
@@ -303,9 +303,9 @@ SW1(config)# spanning-tree portfast bpduguard default
 
 #### BPDU Guard - the problem (update)
 
-<figure><img src=".gitbook/assets/image (90).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (119).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src=".gitbook/assets/image (91).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (120).png" alt=""><figcaption></figcaption></figure>
 
 * Portfast should only be enabled on ports connected to non-switch devices (end hosts, routers).
   * These devices do not send BPDUs.
@@ -397,9 +397,9 @@ SW3(config)# spanning-tree portfast [edge] bpdufilter default
     * minimize congestion
   * Stability and reliability&#x20;
 
-<figure><img src=".gitbook/assets/image (5) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (16).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src=".gitbook/assets/image (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (17).png" alt=""><figcaption></figcaption></figure>
 
 * Within your own LAN, you can easily control the root bridge by setting its priority to 0.
   * But there are cases where you might connect your LAN to other switches outside of your direct control:
@@ -408,7 +408,7 @@ SW3(config)# spanning-tree portfast [edge] bpdufilter default
 * Even if you set your root bridge's priority to 0, its role can be taken by another switch with a lower MAC address.
 * With no safeguard in place SW1, SW2, and SW3 accept S26 as the root bridge, affecting the service provider's STP topology.
 
-<figure><img src=".gitbook/assets/image (2) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (18).png" alt=""><figcaption></figcaption></figure>
 
 * Frames from SW3 to SW1 must take a detour through the customer's LAN.
 * **Root Guard** can be configured to protect your STP topology by preventing your switches from accepting **superior BPDUs** from switches outside of your control.
@@ -426,7 +426,7 @@ SW2(config-if)# spanning-tree guard root
   * The port will not be able to forward data frames and will discard any frames it receives.
   * SW1, SW2, and SW3 will not accept SW6 as the root bridge.
 
-<figure><img src=".gitbook/assets/image (3) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (19).png" alt=""><figcaption></figcaption></figure>
 
 * To re-enable a port disabled by Root Guard, you must solve the issue that disabled the port.
   * The disabled port must stop receiving superior BPDUs.
@@ -452,7 +452,7 @@ SW2(config-if)# spanning-tree guard root
   * If there is a physical problem with either fiber, the devices should be able to detect it and disable their interfaces.
   * If the devices fail to detect the physical problem, it could result in a unidirectional link.
 
-<figure><img src=".gitbook/assets/image (4) (1) (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (20).png" alt=""><figcaption></figcaption></figure>
 
 * BPDUs originate from the Root Bridge and forwarded out of designated ports.
 * SW3 G0/1 is a Non-Designated blocking port because it receives superior BPDUs from SW2.

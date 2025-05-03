@@ -6,7 +6,7 @@ icon: ethernet
 
 ## Interfaces
 
-<figure><img src="../.gitbook/assets/image (27).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (56).png" alt=""><figcaption></figcaption></figure>
 
 This is a **Cisco Catalyst 2960-L Series 24-Port Switch.**
 
@@ -41,7 +41,7 @@ All the Ethernet standards are defined in the IEEE 802.3 standard. The IEEE is t
     * T - TWISTED (it's a protection measure against electromagnetic interference - **EMI**)
     * P - PAIR
 
-    <figure><img src="../.gitbook/assets/image (32).png" alt=""><figcaption></figcaption></figure>
+    <figure><img src=".gitbook/assets/image (61).png" alt=""><figcaption></figcaption></figure>
 * There are 4 pairs in total which means 8 pins. However, not all of the Ethernet standards actually use all 8 wires.
 * 10BASE-5 and 100BASE-5, also known as Ethernet and Fast-Ethernet cables, use 2 pairs, or 4 wires. 1000BASE-T and 10GBASE-T, however, use all 4 fours, or 8 wires.
 
@@ -49,7 +49,7 @@ All the Ethernet standards are defined in the IEEE 802.3 standard. The IEEE is t
 
 Both 10BASE-5 and 100BASE-T standards use 2 pairs of wires, so 4 pins used in total.
 
-<figure><img src="../.gitbook/assets/image (33).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (62).png" alt=""><figcaption></figcaption></figure>
 
 * As you can see, the **PC** transmits data on pins and <mark style="color:yellow;">**1 and 2**</mark> (Tx), and the **switch** receives data on pins <mark style="color:yellow;">1 and 2</mark> (Rx). Vice-versa, the **switch** sends data on pins <mark style="color:yellow;">**3 and 6**</mark> (Tx) and the **PC** receives data on pins <mark style="color:yellow;">**3 and 6**</mark> (Rx).
 * Because the connection between pins do not intersects, there is <mark style="color:yellow;">Full-Duplex</mark> transmission, which means that both devices cand receive and transmit data at the same time.
@@ -57,7 +57,7 @@ Both 10BASE-5 and 100BASE-T standards use 2 pairs of wires, so 4 pins used in to
 * This only works for different network devices, because if I try to connect a router with a router, the pins 1 and 2 transmit data, but the other router cannot receive the data, because the pins 1 and 2 are supposed to send data, not receive data. The router is not prepared to receive data.  This can be fixed using a <mark style="color:yellow;">crossover cable.</mark>
 * So, pin 1 on one side connects to Pin 3 on the other side and pin 2 on one side connects to Pin 6 on the other side. As you can see, the two pairs, 1 and 2, and 3 and 6, are reversed. Pin 3 on the left side will connect to Pin 1 on the right side. And pin 6 on the left side will connect to pin 2 on the right side. The wires are ‘crossed over’ each other, hence the name ‘crossover cable’. The transmit pins on one side are connected to the receive pins on the other side, so 17:00 now the two devices can send data to each other with no problems.&#x20;
 
-<figure><img src="../.gitbook/assets/image (34).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (63).png" alt=""><figcaption></figcaption></figure>
 
 ### Auto MDI-X
 
@@ -80,11 +80,11 @@ The switch whose interfaces I put up the page has 24 ports for RJ45 connectors. 
 * Into one of these transceivers you insert a fiber optic cable. Rather than an electrical signal over copper wiring, these cables send light over glass fibers. Notice that there are two connectors on each end. That’s because you need one connector to transmit data, and one to receive data, on each end.
 * The copper UTP cables used separate wire pairs within the cable to transmit and receive data. The fiber-optic cables instead use separate cables to transmit and receive.
 
-<div align="center"><figure><img src="../.gitbook/assets/image (36).png" alt="" width="375"><figcaption></figcaption></figure></div>
+<div align="center"><figure><img src=".gitbook/assets/image (65).png" alt="" width="375"><figcaption></figcaption></figure></div>
 
 ### Structure of the fiber optic cable
 
-<figure><img src="../.gitbook/assets/image (37).png" alt="" width="541"><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (66).png" alt="" width="541"><figcaption></figcaption></figure>
 
 * There are four numbered parts in this diagram, from the center to the outer layer.&#x20;
 * Number 1 is the fiberglass core itself.  Light is transmitted down this core to transmit data from one device to another.&#x20;
@@ -98,7 +98,7 @@ There are a couple main types of fiber-optic cables. single-mode fiber, and mult
 
 #### Multimode fiber
 
-<figure><img src="../.gitbook/assets/image (38).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (67).png" alt=""><figcaption></figcaption></figure>
 
 * These are two examples of multimode fiber cables. The center represents the fiberglass core, and the blue represents the reflective cladding that reflects light down the cable.&#x20;
 * In multimode fiber cable, the core, the actual glass fiber, is wider than single mode fiber. This wider core allows multiple angles, known as modes, of lightwaves to enter the fiber glass core, as you can see in these two diagrams.&#x20;
@@ -110,7 +110,7 @@ There are a couple main types of fiber-optic cables. single-mode fiber, and mult
 
 This is an example of a single-mode fiber cable. The core diameter of a single-mode fiber cable is narrower than a multimode fiber, meaning the glass fiber is thinner. Light enters at a single angle, known as a mode, from a laser-based transmitter. Notice in the diagram that the light wave travels straight down the core of the cable. Single-mode fiber allows longer cable lengths than both UTP and multimode fiber cables. And single-mode fiber cables are more expensive than multimode fiber cables due to the more expensive laser-based transmitters used.
 
-<figure><img src="../.gitbook/assets/image (39).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (68).png" alt=""><figcaption></figcaption></figure>
 
 ### Cable standards for fiber-optic
 
