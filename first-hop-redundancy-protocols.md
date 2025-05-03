@@ -42,7 +42,7 @@ FHRPs are 'non-preemptive'. The current active router will not automatically giv
 
 ### HSRP Configuration
 
-<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 ```
 R1(config-if)# standby version 2
