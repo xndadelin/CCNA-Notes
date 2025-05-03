@@ -76,3 +76,67 @@ R1#clear ip nat translation *
 R1#show ip nat statistics
 ```
 
+## Dynamic NAT
+
+* In dynamic NAT, the router dynamically maps inside local addresses to inside global addresses as needed.
+* An ACL is used to identify which traffic should be translated.
+  * If the source IP is permitted by the ACL, the source IP will be translated.
+  * If the source IP is denied by the ACL, the source IP will NOT be translated.&#x20;
+* A NAT pool is used to define the available inside global addresses.
+* If there are not enough inside global IP addresses available, it is called 'NAT pool exhaustion'.
+
+```c
+R1(config)#int g0/1
+R1(config-if)#ip nat inside
+
+R1(config-if)#int g0/0
+R1(config-if)#ip nat outside
+R1(config-if)#exit
+
+R1(config)#access-list 1 permit 192.168.0.0 0.0.0.255
+
+R1(config)#ip nat pool POOL1 100.0.0.0 100.0.0.255 prefix-length 24
+
+R1(config)#ip nat inside source list 1 pool POOL1
+```
+
+## PAT (Port Address Translation)
+
+* PAT (aka NAT overload) translates both the IP address and the port number (if necessary)
+* By using a unique port number for each communication flow, a single public IP address can be used by many different internal hosts.&#x20;
+* Because many inside hosts can share a single public IP, PAT is very useful for preserving public IP addresses, and it is used in networks all over the world.
+
+```c
+R1(config)#int g0/1
+R1(config-if)#ip nat inside
+
+R1(config-if)#int g0/0
+R1(config-if)#ip nat outside
+R1(config-if)#exit
+
+R1(config)#access-list 1 permit 192.168.0.0 0.0.0.255
+
+R1(config)#ip nat pool POOL1 100.0.0.0 100.0.0.255 prefix-length 24
+
+R1(config)#ip nat inside source list 1 pool POOL1 overload
+```
+
+```c
+R1(config)#int g0/1
+R1(config-if)#ip nat inside
+
+R1(config-if)#int g0/0
+R1(config-if)#ip nat outside
+R1(config-if)#exit
+
+R1(config)#access-list 1 permit 192.168.0.0 0.0.0.255
+R1(config)#ip nat inside source list 1 interface g0/0 overload
+```
+
+```c
+R1(config)# ip nat pool pool-name start-ip end-ip prefix-length prefix-length
+R1(config)# ip nat pool pool-name start-ip end-ip netmask subnet-mask
+R1(config)# ip nat inside source list access-list pool pool-name
+R1(config)# ip nat inside source list access-list pool pool-name overload
+R1(config)# ip nat inside source list access-list interface interface overload
+```
