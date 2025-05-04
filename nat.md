@@ -24,7 +24,7 @@ icon: swap-arrows
 * Network Address Translation is used to modify the source and/or destination IP addresses of packets.
 * There are various reasons to use NAT, but the most common reason is to allow hosts with private IP addresses to communicate with other hosts over the internet.
 
-<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
 ## Static NAT
 
