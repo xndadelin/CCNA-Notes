@@ -1,6 +1,12 @@
 # Table of contents
 
-* [Houdy!](README.md)
+## Group 1
+
+* [Miscellaneous](README.md)
+
+***
+
+* [Houdy!](<README (2).md>)
 * [Network Devices](<README (1).md>)
 * [Interfaces and Cables](interfaces-and-cables.md)
 * [OSI & TCP/IP](osi-and-tcp-ip.md)
