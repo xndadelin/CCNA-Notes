@@ -1,12 +1,6 @@
 # Table of contents
 
-## Group 1
-
-* [Miscellaneous](README.md)
-
-***
-
-* [Houdy!](<README (2).md>)
+* [Houdy!](README.md)
 * [Network Devices](<README (1).md>)
 * [Interfaces and Cables](interfaces-and-cables.md)
 * [OSI & TCP/IP](osi-and-tcp-ip.md)
@@ -31,3 +25,4 @@
 * [IPv6](ipv6.md)
 * [NAT](nat.md)
 * [ACL](acl.md)
+* [Miscellaneous](miscellaneous.md)
