@@ -87,3 +87,16 @@ R1(config-if)# ip access-group GROUP_NAME { in | out }
 
 * Standard ACLs should be applied as close to the destination as possible.
 
+## Numbered ACLs with subcommands
+
+```
+R1(config)# ip access-list standard acl-number
+R1(config-std-nacl)# [entry-number] {deny | permit} ip wildcard-mask
+```
+
+* You can easily delete individual entries in the ACL with `no [entry-number]`&#x20;
+
+## Resequencing ACLs
+
+* There is a resequencing function that helps edit ACLs.
+* The command is \`
