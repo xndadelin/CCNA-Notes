@@ -99,4 +99,36 @@ R1(config-std-nacl)# [entry-number] {deny | permit} ip wildcard-mask
 ## Resequencing ACLs
 
 * There is a resequencing function that helps edit ACLs.
-* The command is \`
+* The command is `ip access-list resequence acl-id starting-seq-num increment` &#x20;
+
+## Extended ACLs
+
+* Extended ACLs function mostly the same as standard ACLs.
+* They can be numbered or named, just like standard ACLs.
+  * Numbered ACLs use the following ranges:
+    * 100-199
+    * 200 - 2699
+* They are processed from top to bottom, just like standard ACLs.
+* However, it can match traffic based on more parameters, so they are more precise (and more complex) than standard ACLs.
+
+```
+R1(config)# access-list number [permit | deny] protocol src-ip dest-ip
+
+
+R1(config)# ip access-list extended {name | number}
+R1(config-ext-nacl)# [seq-num] [permit | deny] protocol src-ip dest-ip    
+```
+
+### Matching the source/destination IP address
+
+```
+deny tcp any 10.0.0.0 0.0.0.255 
+```
+
+### Matching the TCP/UDP port numbers
+
+* When matching TCP/UDP, you can optionally specify the source and/or destination port numbers to match.
+
+```
+R1(config-ext-nacl)#deny tcp any host 1.1.1.1 eq <port-number | keyword>
+```
