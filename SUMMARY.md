@@ -25,4 +25,5 @@
 * [IPv6](ipv6.md)
 * [NAT](nat.md)
 * [ACL](acl.md)
+* [Domain Name System](domain-name-system.md)
 * [Miscellaneous](miscellaneous.md)

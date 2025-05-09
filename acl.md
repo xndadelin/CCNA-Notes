@@ -10,7 +10,7 @@ icon: list-radio
 * ACLs function as a packet filter, instructing the router to permit or discard specific traffic.
 * ACLs can filter traffic based on source/destination IP addresses, source/destination Layer 4 ports, etc.
 
-<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 > Hosts in 192.168.1.0/24 should be able to access the 10.0.1.0/24 network.
 >
@@ -19,7 +19,7 @@ icon: list-radio
 * ACLs are configured globally on the router. (global config mode)
 * They are an ordered sequence of ACEs. (Access Control Entries)
 
-<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
 
 * Configuring an ACL in global config mode will not make the ACL take effect.
 * The ACL must be applied to an interface.
